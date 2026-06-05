@@ -1,8 +1,11 @@
-# New-API Docker Compose Configuration
-# 
+# New-API Docker Compose Configuration (local build from source)
+#
 # Quick Start:
-#   1. docker-compose up -d
+#   1. docker compose up -d --build
 #   2. Access at http://localhost:3000
+#
+# Rebuild after code changes:
+#   docker compose up -d --build new-api
 #
 # Using MySQL instead of PostgreSQL:
 #   1. Comment out the postgres service and SQL_DSN line 15
@@ -16,7 +19,10 @@ version: '3.4' # For compatibility with older Docker versions
 
 services:
   new-api:
-    image: calciumion/new-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: new-api:local
     container_name: new-api
     restart: always
     command: --log-dir /app/logs
