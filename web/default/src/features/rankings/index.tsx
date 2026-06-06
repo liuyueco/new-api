@@ -58,12 +58,12 @@ export function Rankings() {
       <div className='relative'>
         <div
           aria-hidden
-          className='pointer-events-none absolute inset-x-0 top-0 h-[600px] opacity-20 dark:opacity-[0.10]'
+          className='pointer-events-none absolute inset-x-0 top-0 h-[600px] opacity-80 dark:opacity-45'
           style={{
             background: [
-              'radial-gradient(ellipse 60% 50% at 20% 20%, oklch(0.72 0.18 250 / 80%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 50% 40% at 80% 15%, oklch(0.65 0.15 200 / 60%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 40% 35% at 50% 70%, oklch(0.70 0.12 280 / 40%) 0%, transparent 70%)',
+              'radial-gradient(ellipse 46% 42% at 16% 12%, oklch(0.7115 0.1596 61.71 / 24%) 0%, transparent 72%)',
+              'radial-gradient(ellipse 42% 36% at 86% 24%, oklch(0.7115 0.1596 61.71 / 18%) 0%, transparent 70%)',
+              'linear-gradient(135deg, transparent 0%, oklch(0.7115 0.1596 61.71 / 6%) 50%, transparent 100%)',
             ].join(', '),
             maskImage:
               'linear-gradient(to bottom, black 40%, transparent 100%)',
