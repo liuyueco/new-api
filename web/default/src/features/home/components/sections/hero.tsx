@@ -18,10 +18,9 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
 import { CherryStudio } from '@lobehub/icons'
-import { ArrowRight, CircleDotDashed, Layers3 } from 'lucide-react'
+import { ArrowRight, Layers3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
-import { HeroTerminalDemo } from '../hero-terminal-demo'
 
 interface HeroProps {
   className?: string
@@ -66,8 +65,8 @@ export function Hero(props: HeroProps) {
         className='via-primary/35 absolute top-28 left-1/2 -z-10 h-px w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent'
       />
 
-      <div className='mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-10'>
-        <div className='flex flex-col items-start text-left lg:col-span-6'>
+      <div className='mx-auto flex max-w-5xl justify-center'>
+        <div className='flex w-full flex-col items-center text-center'>
           <div
             className='landing-animate-fade-up border-primary/25 bg-primary/8 text-primary shadow-primary/10 mb-6 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase opacity-0 shadow-sm backdrop-blur-md'
             style={{ animationDelay: '0ms' }}
@@ -80,7 +79,7 @@ export function Hero(props: HeroProps) {
           </div>
 
           <h1
-            className='landing-animate-fade-up max-w-3xl text-[clamp(2.7rem,5.6vw,5rem)] leading-[0.98] font-black tracking-[-0.06em] opacity-0'
+            className='home-display-title landing-animate-fade-up max-w-4xl text-[clamp(2.8rem,6vw,5.4rem)] leading-[0.96] opacity-0'
             style={{ animationDelay: '60ms' }}
           >
             {t('Unified API Gateway for')}
@@ -90,7 +89,7 @@ export function Hero(props: HeroProps) {
           </h1>
 
           <p
-            className='landing-animate-fade-up text-muted-foreground mt-6 max-w-xl text-base leading-8 opacity-0 md:text-lg'
+            className='landing-animate-fade-up text-muted-foreground mx-auto mt-6 max-w-3xl text-base leading-8 opacity-0 md:text-lg'
             style={{ animationDelay: '120ms' }}
           >
             {t(
@@ -99,7 +98,7 @@ export function Hero(props: HeroProps) {
           </p>
 
           <div
-            className='landing-animate-fade-up mt-8 flex flex-wrap items-center gap-3 opacity-0'
+            className='landing-animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3 opacity-0'
             style={{ animationDelay: '180ms' }}
           >
             {props.isAuthenticated ? (
@@ -118,7 +117,7 @@ export function Hero(props: HeroProps) {
                   className='group shadow-primary/20 text-primary-foreground h-12 rounded-full px-6 text-sm font-semibold shadow-lg'
                   render={<Link to='/sign-up' />}
                 >
-                  {t('Get Started')}
+                  {t('Register and use now')}
                   <ArrowRight className='ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
                 </Button>
                 <Button
@@ -126,14 +125,32 @@ export function Hero(props: HeroProps) {
                   className='border-primary/20 bg-background/55 hover:border-primary/45 hover:bg-primary/8 h-12 rounded-full px-6 text-sm font-medium shadow-sm backdrop-blur-md'
                   render={<Link to='/pricing' />}
                 >
-                  {t('View Pricing')}
+                  {t('View affordable pricing')}
                 </Button>
               </>
             )}
           </div>
 
           <div
-            className='landing-animate-fade-up border-border/50 bg-card/70 mt-10 w-full max-w-2xl rounded-3xl border p-4 opacity-0 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.45)] backdrop-blur-xl'
+            className='landing-animate-fade-up mt-5 flex flex-wrap justify-center gap-2 opacity-0'
+            style={{ animationDelay: '210ms' }}
+          >
+            {[
+              t('Register an account'),
+              t('Recharge on demand'),
+              t('Copy API config'),
+            ].map((item) => (
+              <span
+                key={item}
+                className='border-primary/15 bg-primary/6 text-foreground/75 inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold'
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <div
+            className='landing-animate-fade-up border-border/50 bg-card/70 mt-10 w-full max-w-3xl rounded-3xl border p-4 text-left opacity-0 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.45)] backdrop-blur-xl'
             style={{ animationDelay: '240ms' }}
           >
             <div className='mb-4 flex items-center gap-3 px-1'>
@@ -191,21 +208,6 @@ export function Hero(props: HeroProps) {
               </div>
             </div>
           </div>
-        </div>
-
-        <div
-          className='landing-animate-fade-up relative flex w-full justify-center opacity-0 lg:col-span-6'
-          style={{ animationDelay: '320ms' }}
-        >
-          <div
-            aria-hidden
-            className='bg-primary/20 absolute -inset-6 -z-10 rounded-[2.5rem] blur-3xl'
-          />
-          <div className='border-primary/25 bg-primary/10 absolute -top-5 right-4 z-10 hidden items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-md md:flex'>
-            <CircleDotDashed className='text-primary size-3.5' />
-            <span>{t('Multi-protocol Compatible')}</span>
-          </div>
-          <HeroTerminalDemo className='lg:translate-y-6' />
         </div>
       </div>
     </section>

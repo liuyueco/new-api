@@ -16,16 +16,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import {
-  Zap,
-  Shield,
-  Globe,
-  Code,
-  Gauge,
-  DollarSign,
-  Users,
-  HeartHandshake,
-} from 'lucide-react'
+import { Code, DollarSign, Zap } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AnimateInView } from '@/components/animate-in-view'
 
@@ -38,51 +29,54 @@ export function Features(_props: FeaturesProps) {
 
   const features = [
     {
-      id: 'fast',
+      id: 'recharge',
       num: '01',
       title: t('Lightning Fast'),
       desc: t(
         'Optimized network architecture ensures millisecond response times'
       ),
-      span: 'lg:col-span-7',
+      span: 'lg:col-span-4',
       icon: <Zap className='size-5' strokeWidth={1.8} />,
       visual: (
-        <div className='mt-7 grid grid-cols-2 gap-2 sm:grid-cols-3'>
-          {['OpenAI', 'Claude', 'Gemini', 'DeepSeek', 'Qwen', 'Llama'].map(
-            (name, index) => (
-              <div
-                key={name}
-                className='border-primary/15 bg-primary/6 text-foreground/80 hover:border-primary/35 hover:bg-primary/12 flex items-center justify-between rounded-2xl border px-3 py-3 text-xs font-semibold transition-colors duration-300'
-              >
-                <span>{name}</span>
-                <span className='text-primary/70 font-mono text-[10px]'>
-                  0{index + 1}
-                </span>
-              </div>
-            )
-          )}
+        <div className='mt-7 grid grid-cols-2 gap-2'>
+          {[
+            t('Register an account'),
+            t('Recharge on demand'),
+            t('Create API key'),
+            t('Start calling'),
+          ].map((name, index) => (
+            <div
+              key={name}
+              className='border-primary/15 bg-primary/6 text-foreground/80 hover:border-primary/35 hover:bg-primary/12 flex items-center justify-between rounded-2xl border px-3 py-3 text-xs font-semibold transition-colors duration-300'
+            >
+              <span>{name}</span>
+              <span className='text-primary/70 font-mono text-[10px]'>
+                0{index + 1}
+              </span>
+            </div>
+          ))}
         </div>
       ),
     },
     {
-      id: 'secure',
+      id: 'price',
       num: '02',
       title: t('Secure & Reliable'),
       desc: t(
         'Enterprise-grade security with comprehensive permission management'
       ),
-      span: 'lg:col-span-5',
-      icon: <Shield className='size-5' strokeWidth={1.8} />,
+      span: 'lg:col-span-4',
+      icon: <DollarSign className='size-5' strokeWidth={1.8} />,
       visual: (
         <div className='mt-7 flex items-center gap-4'>
           <div className='border-primary/25 bg-primary/10 text-primary relative flex size-20 items-center justify-center rounded-[1.7rem] border'>
-            <Shield className='size-8' strokeWidth={1.5} />
+            <DollarSign className='size-8' strokeWidth={1.5} />
             <div className='bg-primary text-primary-foreground absolute -top-1.5 -right-1.5 flex size-6 items-center justify-center rounded-full text-xs font-black'>
               ✓
             </div>
           </div>
           <div className='space-y-2 text-xs'>
-            {[t('Load Balancing'), t('Rate Limiting'), t('Cost Tracking')].map(
+            {[t('Recharge on demand'), t('Transparent Billing'), t('Cost Tracking')].map(
               (item) => (
                 <div
                   key={item}
@@ -98,73 +92,32 @@ export function Features(_props: FeaturesProps) {
       ),
     },
     {
-      id: 'global',
+      id: 'config',
       num: '03',
-      title: t('Global Coverage'),
-      desc: t('Multi-region deployment for stable global access'),
-      span: 'lg:col-span-5',
-      icon: <Globe className='size-5' strokeWidth={1.8} />,
-      visual: (
-        <div className='border-primary/25 bg-primary/5 mt-7 rounded-3xl border border-dashed p-4'>
-          <div className='relative h-28 overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_50%_50%,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_58%)]'>
-            <div className='border-primary/35 absolute top-1/2 left-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border' />
-            <div className='border-primary/25 absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border' />
-            <span className='bg-primary absolute top-7 left-12 size-2.5 rounded-full shadow-[0_0_22px_color-mix(in_oklch,var(--primary)_80%,transparent)]' />
-            <span className='bg-primary absolute right-14 bottom-8 size-2.5 rounded-full shadow-[0_0_22px_color-mix(in_oklch,var(--primary)_80%,transparent)]' />
-            <span className='bg-primary absolute top-12 right-24 size-2 rounded-full opacity-70' />
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'developer',
-      num: '04',
       title: t('Developer Friendly'),
       desc: t('Compatible API routes for common AI application workflows'),
-      span: 'lg:col-span-7',
+      span: 'lg:col-span-4',
       icon: <Code className='size-5' strokeWidth={1.8} />,
       visual: (
         <div className='mt-7 flex flex-wrap items-center gap-3'>
-          {['API', 'SDK', 'CLI', 'Docs'].map((n) => (
+          {[
+            t('Copy Base URL'),
+            t('Paste API key'),
+            t('Choose model'),
+            t('Use now'),
+          ].map((n) => (
             <div
               key={n}
-              className='border-primary/20 bg-background/75 text-primary flex h-12 min-w-16 items-center justify-center rounded-2xl border px-4 text-xs font-black tracking-[0.12em] shadow-sm'
+              className='border-primary/20 bg-background/75 text-primary flex h-12 min-w-24 items-center justify-center rounded-2xl border px-4 text-xs font-black tracking-[0.08em] shadow-sm'
             >
               {n}
             </div>
           ))}
-          <div className='text-muted-foreground bg-muted/40 rounded-full px-4 py-2 text-xs font-medium'>
-            {t('Multi-protocol Compatible')}
-          </div>
         </div>
       ),
     },
   ]
 
-  const additionalFeatures = [
-    {
-      icon: <Gauge className='size-5' strokeWidth={1.5} />,
-      title: t('High Performance'),
-      desc: t('Support for high concurrency with automatic load balancing'),
-    },
-    {
-      icon: <DollarSign className='size-5' strokeWidth={1.5} />,
-      title: t('Transparent Billing'),
-      desc: t('Pay-as-you-go with real-time usage monitoring'),
-    },
-    {
-      icon: <Users className='size-5' strokeWidth={1.5} />,
-      title: t('Team Collaboration'),
-      desc: t('Multi-user management with flexible permission allocation'),
-    },
-    {
-      icon: <HeartHandshake className='size-5' strokeWidth={1.5} />,
-      title: t('AI API Relay Service'),
-      desc: t(
-        'Relay requests to multiple model APIs through one service, ideal for chatbots, AI tools and business systems'
-      ),
-    },
-  ]
 
   return (
     <section className='relative z-10 overflow-hidden px-6 py-24 md:py-32'>
@@ -178,7 +131,7 @@ export function Features(_props: FeaturesProps) {
             <p className='text-primary mb-3 text-xs font-black tracking-[0.22em] uppercase'>
               {t('Core Features')}
             </p>
-            <h2 className='max-w-xl text-3xl leading-[1.05] font-black tracking-[-0.04em] md:text-5xl'>
+            <h2 className='home-display-title max-w-xl text-3xl leading-[1.05] md:text-5xl'>
               {t('Built for developers,')}
               <br />
               <span className='text-primary'>{t('designed for scale')}</span>
@@ -219,25 +172,6 @@ export function Features(_props: FeaturesProps) {
                 </p>
                 {f.visual}
               </div>
-            </AnimateInView>
-          ))}
-        </div>
-
-        <div className='mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          {additionalFeatures.map((f, i) => (
-            <AnimateInView
-              key={f.title}
-              delay={i * 80}
-              animation='fade-up'
-              className='border-border/50 bg-background/55 hover:border-primary/30 hover:bg-primary/5 rounded-3xl border p-5 transition-colors duration-300'
-            >
-              <div className='text-primary bg-primary/10 mb-4 flex size-11 items-center justify-center rounded-2xl'>
-                {f.icon}
-              </div>
-              <h3 className='mb-2 text-sm font-bold'>{f.title}</h3>
-              <p className='text-muted-foreground text-xs leading-relaxed'>
-                {f.desc}
-              </p>
             </AnimateInView>
           ))}
         </div>

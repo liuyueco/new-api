@@ -50,7 +50,7 @@ export function CTA(props: CTAProps) {
             className='absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklch,var(--primary)_16%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklch,var(--primary)_12%,transparent)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_70%_at_50%_0%,black_0%,transparent_76%)] bg-[size:2.5rem_2.5rem] opacity-45'
           />
           <div className='relative'>
-            <h2 className='text-3xl leading-[1.05] font-black tracking-[-0.05em] md:text-6xl'>
+            <h2 className='home-display-title text-3xl leading-[1.05] md:text-6xl'>
               {t('Ready to simplify')}
               <br />
               <span className='text-primary'>{t('your AI integration?')}</span>
