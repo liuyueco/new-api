@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Building YQ API Electron App..."
+echo "Building YAQO WORK Electron App..."
 
 echo "Step 1: Building frontend..."
 cd ../web

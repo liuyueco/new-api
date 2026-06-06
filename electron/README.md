@@ -1,6 +1,6 @@
-# YQ API Electron Desktop App
+# YAQO WORK Electron Desktop App
 
-This directory contains the Electron wrapper for YQ API, providing a native desktop application with system tray support for Windows, macOS, and Linux.
+This directory contains the Electron wrapper for YAQO WORK, providing a native desktop application with system tray support for Windows, macOS, and Linux.
 
 ## Prerequisites
 
@@ -68,6 +68,6 @@ const PORT = 3000; // Change to desired port
 ### Database Location
 - **Development**: `../data/new-api.db` (project directory)
 - **Production**:
-  - macOS: `~/Library/Application Support/YQ API/data/`
-  - Windows: `%APPDATA%/YQ API/data/`
-  - Linux: `~/.config/YQ API/data/`
+  - macOS: `~/Library/Application Support/YAQO WORK/data/`
+  - Windows: `%APPDATA%/YAQO WORK/data/`
+  - Linux: `~/.config/YAQO WORK/data/`

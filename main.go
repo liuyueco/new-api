@@ -56,7 +56,7 @@ func main() {
 		return
 	}
 
-	common.SysLog("YQ API " + common.Version + " started")
+	common.SysLog("YAQO WORK " + common.Version + " started")
 	if os.Getenv("GIN_MODE") != "debug" {
 		gin.SetMode(gin.ReleaseMode)
 	}

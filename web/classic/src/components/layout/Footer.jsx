@@ -237,7 +237,7 @@ const FooterBar = () => {
                 rel='noopener noreferrer'
                 className='!text-semi-color-primary font-medium'
               >
-                YQ API
+                YAQO WORK
               </a>
             </div>
           </div>

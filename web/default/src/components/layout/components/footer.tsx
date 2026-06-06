@@ -41,12 +41,6 @@ interface FooterProps {
   className?: string
 }
 
-const NEW_API_FOOTER_ATTRIBUTION_KEY = [
-  'footer',
-  'new' + 'api',
-  'projectAttributionSuffix',
-].join('.')
-
 function FooterLinkItem(props: { link: FooterLink }) {
   const { t } = useTranslation()
   const isExternal = props.link.href.startsWith('http')
@@ -126,16 +120,18 @@ function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
   const { t } = useTranslation()
   const content = (
     <span className='text-muted-foreground/45'>
-      &copy; {props.currentYear}{' '}
+      {t('Design and development by')}{' '}
+      <span className='text-foreground/70 font-medium'>{t('YAQO WORK')}</span>
+      {' · '}
+      {t('Based on')}{' '}
       <a
         href='https://github.com/QuantumNous/new-api'
         target='_blank'
         rel='noopener noreferrer'
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
-        {t('YQ API')}
+        New API (QuantumNous)
       </a>
-      . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
     </span>
   )
   if (props.inline) {
@@ -158,7 +154,7 @@ export function Footer(props: FooterProps) {
   } = useSystemConfig()
 
   const displayLogo = systemLogo || props.logo || '/logo.png'
-  const displayName = systemName || props.name || 'YQ API'
+  const displayName = systemName || props.name || 'YAQO WORK'
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
 
@@ -299,7 +295,7 @@ export function Footer(props: FooterProps) {
             </span>
             <LegalLinks leadingSeparator />
           </div>
-          {/* <ProjectAttribution currentYear={currentYear} /> */}
+          <ProjectAttribution currentYear={currentYear} />
         </div>
       </div>
     </footer>

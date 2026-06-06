@@ -27,7 +27,7 @@ import {
 const defaultSiteSettings: SiteSettings = {
   'theme.frontend': 'default',
   Notice: '',
-  SystemName: 'YQ API',
+  SystemName: 'YAQO WORK',
   Logo: '',
   Footer: '',
   About: '',

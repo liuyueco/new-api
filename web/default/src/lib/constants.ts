@@ -21,7 +21,7 @@ For commercial licensing, please contact support@quantumnous.com
  */
 
 // System Configuration Defaults
-export const DEFAULT_SYSTEM_NAME = 'YQ API'
+export const DEFAULT_SYSTEM_NAME = 'YAQO WORK'
 export const DEFAULT_LOGO = '/logo.png'
 
 // LocalStorage Keys
