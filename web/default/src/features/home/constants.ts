@@ -121,8 +121,9 @@ export const DEFAULT_FEATURES = [
     iconName: 'Users',
   },
   {
-    title: 'Open Source',
-    description: 'Community driven, self-hosted, and extensible',
+    title: 'AI API Relay Service',
+    description:
+      'Relay requests to multiple model APIs through one service, ideal for chatbots, AI tools and business systems',
     iconName: 'HeartHandshake',
   },
 ] as const

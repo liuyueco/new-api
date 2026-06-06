@@ -18,9 +18,8 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
 import { CherryStudio } from '@lobehub/icons'
-import { ArrowRight, BookOpen } from 'lucide-react'
+import { ArrowRight, CircleDotDashed, Layers3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useStatus } from '@/hooks/use-status'
 import { Button } from '@/components/ui/button'
 import { HeroTerminalDemo } from '../hero-terminal-demo'
 
@@ -29,10 +28,9 @@ interface HeroProps {
   isAuthenticated?: boolean
 }
 
-// Stylized three-dots indicator representing "More"
 const MoreIcon = () => (
   <svg
-    className='text-muted-foreground/60 group-hover:text-foreground size-6 shrink-0 transition-colors'
+    className='text-primary/70 group-hover:text-primary size-5 shrink-0 transition-colors'
     viewBox='0 0 24 24'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
@@ -45,85 +43,54 @@ const MoreIcon = () => (
 
 export function Hero(props: HeroProps) {
   const { t } = useTranslation()
-  const { status } = useStatus()
-  const docsUrl =
-    (status?.docs_link as string | undefined) || 'https://docs.newapi.pro'
-
-  const renderDocsButton = () => {
-    const isExternal = docsUrl.startsWith('http')
-    if (isExternal) {
-      return (
-        <Button
-          variant='outline'
-          className='group border-border/50 hover:border-border hover:bg-muted/50 inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-sm font-medium'
-          render={
-            <a href={docsUrl} target='_blank' rel='noopener noreferrer' />
-          }
-        >
-          <BookOpen className='text-muted-foreground/80 group-hover:text-foreground size-4 transition-colors duration-200' />
-          <span>{t('Docs')}</span>
-        </Button>
-      )
-    }
-    return (
-      <Button
-        variant='outline'
-        className='group border-border/50 hover:border-border hover:bg-muted/50 inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-sm font-medium'
-        render={<Link to={docsUrl} />}
-      >
-        <BookOpen className='text-muted-foreground/80 group-hover:text-foreground size-4 transition-colors duration-200' />
-        <span>{t('Docs')}</span>
-      </Button>
-    )
-  }
 
   return (
     <section className='relative z-10 overflow-hidden px-6 pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28'>
-      {/* Radial gradient background */}
       <div
         aria-hidden
-        className='pointer-events-none absolute inset-0 -z-10 opacity-25 dark:opacity-[0.12]'
+        className='pointer-events-none absolute inset-0 -z-10 opacity-80 dark:opacity-45'
         style={{
           background: [
-            'radial-gradient(ellipse 60% 50% at 20% 20%, oklch(0.72 0.18 250 / 80%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 50% 40% at 80% 15%, oklch(0.65 0.15 200 / 60%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 40% 35% at 40% 80%, oklch(0.70 0.12 280 / 40%) 0%, transparent 70%)',
+            'radial-gradient(ellipse 46% 42% at 16% 12%, oklch(0.7115 0.1596 61.71 / 24%) 0%, transparent 72%)',
+            'radial-gradient(ellipse 42% 36% at 86% 24%, oklch(0.7115 0.1596 61.71 / 18%) 0%, transparent 70%)',
+            'linear-gradient(135deg, transparent 0%, oklch(0.7115 0.1596 61.71 / 6%) 50%, transparent 100%)',
           ].join(', '),
         }}
       />
-      {/* Grid pattern */}
       <div
         aria-hidden
-        className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black_20%,transparent_100%)] bg-[size:4rem_4rem] opacity-[0.08]'
+        className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,color-mix(in_oklch,var(--primary)_22%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklch,var(--primary)_16%,transparent)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_75%_55%_at_50%_18%,black_10%,transparent_78%)] bg-[size:3.25rem_3.25rem] opacity-35 dark:opacity-20'
+      />
+      <div
+        aria-hidden
+        className='via-primary/35 absolute top-28 left-1/2 -z-10 h-px w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent'
       />
 
-      <div className='mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-8'>
-        {/* Left Column: Title, description, action buttons and application support */}
+      <div className='mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-10'>
         <div className='flex flex-col items-start text-left lg:col-span-6'>
-          {/* Top Pill Badge */}
           <div
-            className='landing-animate-fade-up mb-5 inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 px-3 py-1.5 text-[11px] font-medium text-blue-600 opacity-0 shadow-xs dark:border-blue-400/20 dark:bg-blue-400/5 dark:text-blue-400'
+            className='landing-animate-fade-up border-primary/25 bg-primary/8 text-primary shadow-primary/10 mb-6 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase opacity-0 shadow-sm backdrop-blur-md'
             style={{ animationDelay: '0ms' }}
           >
-            <span className='relative flex size-1.5'>
-              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75' />
-              <span className='relative inline-flex size-1.5 rounded-full bg-blue-500 dark:bg-blue-400' />
+            <span className='relative flex size-2'>
+              <span className='bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-50' />
+              <span className='bg-primary relative inline-flex size-2 rounded-full' />
             </span>
             <span>{t('AI Application Infrastructure Foundation')}</span>
           </div>
 
           <h1
-            className='landing-animate-fade-up text-[clamp(2.25rem,4.5vw,3.25rem)] leading-[1.15] font-bold tracking-tight'
+            className='landing-animate-fade-up max-w-3xl text-[clamp(2.7rem,5.6vw,5rem)] leading-[0.98] font-black tracking-[-0.06em] opacity-0'
             style={{ animationDelay: '60ms' }}
           >
             {t('Unified API Gateway for')}
-            <br />
-            <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
+            <span className='text-primary relative mt-1 block'>
               {t('Vast Range of AI Models')}
             </span>
           </h1>
+
           <p
-            className='landing-animate-fade-up text-muted-foreground/80 mt-5 max-w-xl text-base leading-relaxed opacity-0 md:text-[15px]'
+            className='landing-animate-fade-up text-muted-foreground mt-6 max-w-xl text-base leading-8 opacity-0 md:text-lg'
             style={{ animationDelay: '120ms' }}
           >
             {t(
@@ -138,18 +105,17 @@ export function Hero(props: HeroProps) {
             {props.isAuthenticated ? (
               <>
                 <Button
-                  className='group h-11 rounded-lg px-5 text-sm font-medium'
+                  className='group shadow-primary/20 text-primary-foreground h-12 rounded-full px-6 text-sm font-semibold shadow-lg'
                   render={<Link to='/dashboard' />}
                 >
                   {t('Go to Dashboard')}
                   <ArrowRight className='ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
                 </Button>
-                {renderDocsButton()}
               </>
             ) : (
               <>
                 <Button
-                  className='group h-11 rounded-lg px-5 text-sm font-medium'
+                  className='group shadow-primary/20 text-primary-foreground h-12 rounded-full px-6 text-sm font-semibold shadow-lg'
                   render={<Link to='/sign-up' />}
                 >
                   {t('Get Started')}
@@ -157,56 +123,55 @@ export function Hero(props: HeroProps) {
                 </Button>
                 <Button
                   variant='outline'
-                  className='border-border/50 hover:border-border hover:bg-muted/50 h-11 rounded-lg px-5 text-sm font-medium'
+                  className='border-primary/20 bg-background/55 hover:border-primary/45 hover:bg-primary/8 h-12 rounded-full px-6 text-sm font-medium shadow-sm backdrop-blur-md'
                   render={<Link to='/pricing' />}
                 >
                   {t('View Pricing')}
                 </Button>
-                {renderDocsButton()}
               </>
             )}
           </div>
 
-          {/* Supported Apps (参考图二样式，进行卡片化和信息扩充设计，增加视觉高度) */}
           <div
-            className='landing-animate-fade-up mt-10 w-full max-w-xl opacity-0'
+            className='landing-animate-fade-up border-border/50 bg-card/70 mt-10 w-full max-w-2xl rounded-3xl border p-4 opacity-0 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.45)] backdrop-blur-xl'
             style={{ animationDelay: '240ms' }}
           >
-            <div className='mb-4 flex flex-col gap-1'>
-              <span className='text-muted-foreground/50 text-[10px] font-bold tracking-[0.15em] uppercase'>
-                {t('Supported Applications')}
-              </span>
-              <p className='text-muted-foreground/60 text-xs leading-relaxed'>
-                {t(
-                  'Supports one-click configuration and perfectly adapts to NewAPI multi-protocol configuration.'
-                )}
-              </p>
+            <div className='mb-4 flex items-center gap-3 px-1'>
+              <div className='bg-primary/10 text-primary flex size-9 items-center justify-center rounded-2xl'>
+                <Layers3 className='size-4' strokeWidth={1.8} />
+              </div>
+              <div>
+                <span className='text-foreground text-xs font-bold tracking-[0.15em] uppercase'>
+                  {t('Supported Applications')}
+                </span>
+                <p className='text-muted-foreground mt-0.5 text-xs leading-relaxed'>
+                  {t(
+                    'Supports one-click configuration and perfectly adapts to NewAPI multi-protocol configuration.'
+                  )}
+                </p>
+              </div>
             </div>
-            <div className='flex flex-wrap items-center gap-3'>
-              {/* Cherry Studio */}
+            <div className='grid gap-2 sm:grid-cols-3'>
               <a
                 href='https://cherry-ai.com'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='group border-border/40 bg-muted/15 text-foreground/80 hover:border-border hover:bg-muted/30 hover:text-foreground flex items-center gap-3 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'
+                className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'
               >
                 <CherryStudio.Color size={24} className='shrink-0' />
                 <span>Cherry Studio</span>
               </a>
-
-              {/* CC Switch */}
               <a
                 href='https://ccswitch.io'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='group border-border/40 bg-muted/15 text-foreground/80 hover:border-border hover:bg-muted/30 hover:text-foreground flex items-center gap-3 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'
+                className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'
               >
                 <img
                   src='https://ccswitch.io/favicon.png'
                   alt='CC Switch'
                   className='size-6 shrink-0 rounded-md object-contain'
                   onError={(e) => {
-                    // Fallback to a styled text avatar if the remote favicon fails to load in sandbox or local environments
                     e.currentTarget.style.display = 'none'
                     const fallback = e.currentTarget.nextSibling as HTMLElement
                     if (fallback) fallback.style.display = 'flex'
@@ -214,15 +179,13 @@ export function Hero(props: HeroProps) {
                 />
                 <span
                   style={{ display: 'none' }}
-                  className='size-6 shrink-0 items-center justify-center rounded-md bg-blue-500/10 text-[10px] font-bold text-blue-600 dark:bg-blue-400/10 dark:text-blue-400'
+                  className='bg-primary/10 text-primary size-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold'
                 >
                   CC
                 </span>
                 <span>CC Switch</span>
               </a>
-
-              {/* "更多" */}
-              <div className='group border-border/40 bg-muted/15 text-foreground/55 hover:border-border hover:bg-muted/30 hover:text-foreground flex cursor-default items-center gap-2.5 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'>
+              <div className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex cursor-default items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'>
                 <MoreIcon />
                 <span>{t('More Apps')}</span>
               </div>
@@ -230,12 +193,19 @@ export function Hero(props: HeroProps) {
           </div>
         </div>
 
-        {/* Right Column: Hero Terminal API Demo */}
         <div
-          className='landing-animate-fade-up flex w-full justify-center opacity-0 lg:col-span-6'
+          className='landing-animate-fade-up relative flex w-full justify-center opacity-0 lg:col-span-6'
           style={{ animationDelay: '320ms' }}
         >
-          <HeroTerminalDemo className='mt-8 lg:mt-0' />
+          <div
+            aria-hidden
+            className='bg-primary/20 absolute -inset-6 -z-10 rounded-[2.5rem] blur-3xl'
+          />
+          <div className='border-primary/25 bg-primary/10 absolute -top-5 right-4 z-10 hidden items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-md md:flex'>
+            <CircleDotDashed className='text-primary size-3.5' />
+            <span>{t('Multi-protocol Compatible')}</span>
+          </div>
+          <HeroTerminalDemo className='lg:translate-y-6' />
         </div>
       </div>
     </section>

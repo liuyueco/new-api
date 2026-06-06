@@ -25,7 +25,7 @@ export function HowItWorks() {
 
   const steps = [
     {
-      num: '1',
+      num: '01',
       title: t('Configure'),
       desc: t(
         'Add your API keys, set up channels and configure access permissions'
@@ -33,7 +33,7 @@ export function HowItWorks() {
       icon: <Settings className='size-6' strokeWidth={1.5} />,
     },
     {
-      num: '2',
+      num: '02',
       title: t('Connect'),
       desc: t(
         'Connect through OpenAI, Claude, Gemini, and other compatible API routes'
@@ -41,7 +41,7 @@ export function HowItWorks() {
       icon: <Zap className='size-6' strokeWidth={1.5} />,
     },
     {
-      num: '3',
+      num: '03',
       title: t('Monitor'),
       desc: t('Track usage, costs and performance with real-time analytics'),
       icon: <BarChart3 className='size-6' strokeWidth={1.5} />,
@@ -49,35 +49,41 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className='border-border/40 relative z-10 border-t px-6 py-24 md:py-32'>
+    <section className='relative z-10 px-6 py-24 md:py-32'>
       <div className='mx-auto max-w-6xl'>
         <AnimateInView className='mb-16 text-center md:mb-20'>
-          <p className='text-muted-foreground mb-3 text-xs font-medium tracking-widest uppercase'>
+          <p className='text-primary mb-3 text-xs font-black tracking-[0.22em] uppercase'>
             {t('How It Works')}
           </p>
-          <h2 className='text-2xl font-bold tracking-tight md:text-3xl'>
+          <h2 className='text-3xl leading-[1.08] font-black tracking-[-0.04em] md:text-5xl'>
             {t('Three steps to get started')}
           </h2>
         </AnimateInView>
 
-        <div className='grid gap-8 md:grid-cols-3 md:gap-12'>
+        <div className='relative grid gap-5 md:grid-cols-3'>
+          <div
+            aria-hidden
+            className='bg-primary/20 absolute top-14 right-[16%] left-[16%] hidden h-px md:block'
+          />
           {steps.map((step, i) => (
             <AnimateInView
               key={step.num}
               delay={i * 150}
               animation='fade-up'
-              className='relative flex flex-col items-center text-center'
+              className='border-border/60 bg-card/70 relative rounded-[2rem] border p-6 shadow-[0_22px_70px_-58px_rgba(0,0,0,0.65)] backdrop-blur-xl md:p-7'
             >
-              <div className='relative mb-6'>
-                <div className='text-muted-foreground border-border/50 bg-muted/30 flex size-16 items-center justify-center rounded-2xl border transition-colors'>
+              <div className='mb-8 flex items-center justify-between'>
+                <div className='border-primary/25 bg-primary/10 text-primary flex size-16 items-center justify-center rounded-[1.4rem] border'>
                   {step.icon}
                 </div>
-                <div className='bg-foreground text-background absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full text-xs font-bold'>
+                <span className='text-primary/55 font-mono text-sm font-black tracking-[0.18em]'>
                   {step.num}
-                </div>
+                </span>
               </div>
-              <h3 className='mb-2 text-base font-semibold'>{step.title}</h3>
-              <p className='text-muted-foreground max-w-[240px] text-sm leading-relaxed'>
+              <h3 className='mb-3 text-xl font-black tracking-[-0.03em]'>
+                {step.title}
+              </h3>
+              <p className='text-muted-foreground text-sm leading-7'>
                 {step.desc}
               </p>
             </AnimateInView>

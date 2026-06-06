@@ -105,18 +105,16 @@ export function Stats(_props: StatsProps) {
   ]
 
   return (
-    <div className='border-border/40 bg-muted/10 relative z-10 border-y'>
-      <div className='mx-auto max-w-6xl px-6 py-10 md:py-12'>
-        <div className='grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12'>
+    <div className='relative z-10 px-6'>
+      <div className='border-primary/15 bg-card/75 mx-auto max-w-6xl overflow-hidden rounded-[2rem] border shadow-[0_24px_80px_-60px_rgba(0,0,0,0.65)] backdrop-blur-xl'>
+        <div className='divide-primary/10 grid grid-cols-2 divide-x divide-y md:grid-cols-4 md:divide-y-0'>
           {stats.map((s) => (
-            <div
-              key={s.label}
-              className='flex flex-col items-center text-center'
-            >
-              <span className='text-2xl font-bold tracking-tight md:text-3xl'>
+            <div key={s.label} className='group relative p-6 text-left md:p-8'>
+              <div className='bg-primary/10 absolute right-4 bottom-4 size-16 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100' />
+              <span className='text-primary block text-4xl leading-none font-black tracking-[-0.05em] md:text-5xl'>
                 <Counter end={s.end} suffix={s.suffix} decimals={s.decimals} />
               </span>
-              <span className='text-muted-foreground mt-1.5 text-xs'>
+              <span className='text-muted-foreground mt-3 block text-xs font-semibold tracking-[0.14em] uppercase'>
                 {s.label}
               </span>
             </div>

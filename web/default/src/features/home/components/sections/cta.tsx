@@ -35,49 +35,50 @@ export function CTA(props: CTAProps) {
   }
 
   return (
-    <section className='relative z-10 overflow-hidden px-6 py-24 md:py-32'>
-      {/* Gradient mesh background */}
-      <div
-        aria-hidden
-        className='absolute inset-0 -z-10 opacity-20 dark:opacity-[0.08]'
-        style={{
-          background: [
-            'radial-gradient(ellipse 50% 50% at 30% 50%, oklch(0.7 0.15 250 / 70%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 40% 40% at 70% 40%, oklch(0.65 0.12 200 / 50%) 0%, transparent 70%)',
-          ].join(', '),
-        }}
-      />
-
-      <AnimateInView
-        className='mx-auto max-w-2xl text-center'
-        animation='scale-in'
-      >
-        <h2 className='text-2xl leading-tight font-bold tracking-tight md:text-4xl'>
-          {t('Ready to simplify')}
-          <br />
-          <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
-            {t('your AI integration?')}
-          </span>
-        </h2>
-        <p className='text-muted-foreground/80 mx-auto mt-5 max-w-md text-sm leading-relaxed md:text-base'>
-          {t(
-            'Deploy your own gateway and start routing requests through your configured upstream services.'
-          )}
-        </p>
-        <div className='mt-8 flex items-center justify-center gap-3'>
-          <Button className='group rounded-lg' render={<Link to='/sign-up' />}>
-            {t('Get Started')}
-            <ArrowRight className='ml-1 size-3.5 transition-transform duration-200 group-hover:translate-x-0.5' />
-          </Button>
-          <Button
-            variant='outline'
-            className='border-border/50 hover:border-border hover:bg-muted/50 rounded-lg'
-            render={<Link to='/pricing' />}
-          >
-            {t('View Pricing')}
-          </Button>
-        </div>
-      </AnimateInView>
+    <section className='relative z-10 overflow-hidden px-6 py-20 md:py-28'>
+      <div className='mx-auto max-w-6xl'>
+        <AnimateInView
+          className='border-primary/20 bg-card/80 relative overflow-hidden rounded-[2.25rem] border p-8 text-center shadow-[0_28px_90px_-65px_rgba(0,0,0,0.7)] backdrop-blur-xl md:p-14'
+          animation='scale-in'
+        >
+          <div
+            aria-hidden
+            className='bg-primary/20 absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full blur-3xl'
+          />
+          <div
+            aria-hidden
+            className='absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklch,var(--primary)_16%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklch,var(--primary)_12%,transparent)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_70%_at_50%_0%,black_0%,transparent_76%)] bg-[size:2.5rem_2.5rem] opacity-45'
+          />
+          <div className='relative'>
+            <h2 className='text-3xl leading-[1.05] font-black tracking-[-0.05em] md:text-6xl'>
+              {t('Ready to simplify')}
+              <br />
+              <span className='text-primary'>{t('your AI integration?')}</span>
+            </h2>
+            <p className='text-muted-foreground mx-auto mt-6 max-w-xl text-sm leading-7 md:text-base'>
+              {t(
+                'Deploy your own gateway and start routing requests through your configured upstream services.'
+              )}
+            </p>
+            <div className='mt-9 flex flex-wrap items-center justify-center gap-3'>
+              <Button
+                className='group shadow-primary/20 text-primary-foreground h-12 rounded-full px-6 text-sm font-semibold shadow-lg'
+                render={<Link to='/sign-up' />}
+              >
+                {t('Get Started')}
+                <ArrowRight className='ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+              </Button>
+              <Button
+                variant='outline'
+                className='border-primary/20 bg-background/55 hover:border-primary/45 hover:bg-primary/8 h-12 rounded-full px-6 text-sm font-medium shadow-sm backdrop-blur-md'
+                render={<Link to='/pricing' />}
+              >
+                {t('View Pricing')}
+              </Button>
+            </div>
+          </div>
+        </AnimateInView>
+      </div>
     </section>
   )
 }
