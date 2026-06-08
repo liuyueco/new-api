@@ -50,34 +50,40 @@ const Home = () => {
   const planCards = [
     {
       badge: t('快速起步'),
-      title: t('个人体验方案'),
-      subtitle: t('适合快速购买 token 并接入现有应用'),
+      title: 'Standard Plan',
+      subtitle: t('学生和轻量级开发者'),
+      price: '¥399',
+      cadence: '/4周',
       points: [
-        t('兼容 OpenAI 风格接口'),
-        t('主流模型统一中转'),
-        t('支持基础 token 和额度使用'),
+        t('周额度 $110'),
+        t('相当于全站 API 计费额外尊享 9 折'),
+        t('最多 5 个并发'),
       ],
       highlighted: false,
     },
     {
       badge: t('推荐选择'),
-      title: t('稳定调用方案'),
-      subtitle: t('适合更高频率、更稳定的日常调用场景'),
+      title: 'Premium Plan',
+      subtitle: t('专业开发者首选'),
+      price: '¥899',
+      cadence: '/4周',
       points: [
-        t('支持更丰富的 token 使用和购买方式'),
-        t('更适合长期稳定调用和日常使用'),
-        t('适合需要持续消费模型能力的用户'),
+        t('周额度 $260'),
+        t('相当于全站 API 计费额外尊享 86 折'),
+        t('最多 5 个并发'),
       ],
       highlighted: true,
     },
     {
       badge: t('长期扩展'),
-      title: t('企业用量方案'),
-      subtitle: t('适合更高额度、更高并发和更稳定的使用需求'),
+      title: 'Professional Plan',
+      subtitle: t('顶尖开发者与极客'),
+      price: '¥1799',
+      cadence: '/4周',
       points: [
-        t('覆盖更多模型与调用场景'),
-        t('更适合稳定高频业务调用'),
-        t('适合长期用量管理和稳定消费'),
+        t('周额度 $530'),
+        t('相当于全站 API 计费额外尊享 84 折'),
+        t('最多 5 个并发'),
       ],
       highlighted: false,
     },
@@ -87,32 +93,32 @@ const Home = () => {
     {
       name: 'David Z.',
       role: t('全栈工程师 @ 大型互联网公司'),
-      quote: t('接入新模型时不再需要重复改 SDK、鉴权和计费逻辑，整个迭代链路顺了很多。'),
+      quote: t('每笔消耗在后台都能对上，余额变动有明细，计费规则看得懂，比用过的一些中转站实在多了。'),
     },
     {
       name: t('陈工'),
       role: t('前端架构师 @ 生活服务平台'),
-      quote: t('把模型调用、公告、令牌和日志都集中到一个后台之后，运营和研发终于能共用一套配置。'),
+      quote: t('日常写代码连着跑，首 token 和整段响应都够快，高峰期也没有明显变慢，体验接近官方直连。'),
     },
     {
       name: t('吴总监'),
       role: t('研发总监 @ 金融科技公司'),
-      quote: t('最实用的是排障路径很清晰，哪个用户、哪个令牌、走了哪条渠道都能快速定位。'),
+      quote: t('Cursor、Continue 这些工具改个 Base URL 就能用，协议兼容到位，团队迁移基本只改一行配置。'),
     },
     {
       name: 'Sarah L.',
       role: t('独立开发者 / iOS 专家'),
-      quote: t('作为独立开发者，我更在意接入速度和维护成本。这套首页展示出来的产品逻辑是对的。'),
+      quote: t('一个人做项目，不想维护一堆密钥和节点。一个账号常用模型都能用，充值查量都在同一页，真的省事。'),
     },
     {
       name: t('李先生'),
       role: t('技术负责人 @ 独角兽企业'),
-      quote: t('按量额度和统一入口设计很实用，高峰期也不必再担心资源和策略散落在多个地方。'),
+      quote: t('业务 7×24 在线，最怕半夜接口挂。稳定性不错，调用日志也能追溯，排查比自己在那试错快多了。'),
     },
     {
       name: 'Alice S.',
       role: t('算法工程师 @ 社交媒体平台'),
-      quote: t('客户端体验和后台治理终于被放到同一个系统里，产品推进速度明显更稳。'),
+      quote: t('Claude、GPT、Gemini 走同一入口，新模型上线也跟得比较勤，不用每个厂商单独找渠道、配 key。'),
     },
   ];
 
@@ -283,11 +289,11 @@ const Home = () => {
             </section>
 
             <section className='classic-home-v2-section' id='plans'>
-              <div className='classic-home-v2-section-head'>
-                <span className='classic-home-v2-section-badge'>{t('方案')}</span>
-                <h2>{t('选择适合你的 token 使用方案')}</h2>
+              <div className='classic-home-v2-section-head classic-home-v2-section-head-center'>
+                <span className='classic-home-v2-section-badge'>{t('套餐订阅')}</span>
+                <h2>{t('选择适合你的订阅方案')}</h2>
                 <p>
-                  {t('不强调模板式官网文案，直接把用户关心的接入效率、开箱即用和运营稳定性讲清楚。')}
+                  {t('覆盖个人试用、稳定开发与企业协作，先把用户最关心的额度、折扣、并发和服务边界讲清楚。')}
                 </p>
               </div>
 
@@ -297,9 +303,18 @@ const Home = () => {
                     className={`classic-home-v2-plan-card${item.highlighted ? ' classic-home-v2-plan-card-highlighted' : ''}`}
                     key={item.title}
                   >
-                    <div className='classic-home-v2-plan-badge'>{item.badge}</div>
+                    <div
+                      className={`classic-home-v2-plan-badge${item.highlighted ? ' classic-home-v2-plan-badge-highlighted' : ''}`}
+                    >
+                      {item.badge}
+                    </div>
                     <h3>{item.title}</h3>
-                    <p>{item.subtitle}</p>
+                    <p className='classic-home-v2-plan-subtitle'>{item.subtitle}</p>
+                    <div className='classic-home-v2-plan-price'>
+                      <strong>{item.price}</strong>
+                      <span>{item.cadence}</span>
+                    </div>
+                    <div className='classic-home-v2-plan-divider' />
                     <ul>
                       {item.points.map((point) => (
                         <li key={point}>{point}</li>
@@ -307,11 +322,11 @@ const Home = () => {
                     </ul>
                     <Link to='/login'>
                       <Button
-                        theme={item.highlighted ? 'solid' : 'light'}
+                        theme='solid'
                         type={item.highlighted ? 'primary' : 'tertiary'}
-                        className='classic-home-v2-plan-btn'
+                        className={`classic-home-v2-plan-btn${item.highlighted ? '' : ' classic-home-v2-plan-btn-muted'}`}
                       >
-                        {t('登录后获取 token')}
+                        {t('登录订阅')}
                       </Button>
                     </Link>
                   </article>
@@ -321,24 +336,19 @@ const Home = () => {
                   <div className='classic-home-v2-enterprise-badge'>
                     {t('企业协作')}
                   </div>
-                  <h3>{t('需要更高阶的 token 方案？')}</h3>
+                  <h3>{t('企业方案')}</h3>
                   <p>
-                    {t('适合更高频调用、更高额度需求和更长期的业务使用场景。')}
+                    {t('根据团队规模、额度与并发灵活适配配置')}
                   </p>
                   <ul>
-                    <li>{t('支持更大规模的 token 使用需求')}</li>
-                    <li>{t('更适合长期稳定调用与业务接入')}</li>
-                    <li>{t('方便结合文档、公告和服务支持持续使用')}</li>
+                    <li>{t('按团队规模定制额度与并发')}</li>
+                    <li>{t('支持专属 API 接入与用量管理')}</li>
+                    <li>{t('专属售后支持与故障优先处理')}</li>
+                    <li>{t('支持合同、发票与企业结算')}</li>
                   </ul>
-                  <a
-                    href={docsLink || 'mailto:support@quantumnous.com'}
-                    target={docsLink ? '_blank' : undefined}
-                    rel={docsLink ? 'noreferrer' : undefined}
-                  >
-                    <Button theme='solid' type='warning' className='classic-home-v2-enterprise-btn'>
-                      {t('查看文档或联系支持')}
-                    </Button>
-                  </a>
+                  <Button theme='solid' type='warning' className='classic-home-v2-enterprise-btn'>
+                    {t('咨询企业方案')}
+                  </Button>
                 </article>
               </div>
             </section>
@@ -348,11 +358,11 @@ const Home = () => {
                 <span className='classic-home-v2-section-badge'>{t('用户评价')}</span>
                 <h2>{t('用户怎么说')}</h2>
                 <p>
-                  {t('真实的反馈通常不在于页面多炫，而在于 token 是否好买、接口是否稳定、模型是否够全。')}
+                  {t('做 API 中转，真正让人留下来的，从来都是计费透不透明、响应够不够快、兼容广不广、用起来省不省心。')}
                 </p>
               </div>
 
-              <div className='classic-home-v2-review-masonry'>
+              <div className='classic-home-v2-review-grid'>
                 {reviewCards.map((item, index) => (
                   <article
                     className={`classic-home-v2-review-card classic-home-v2-review-card-${(index % 3) + 1}`}
