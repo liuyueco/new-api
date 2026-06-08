@@ -152,6 +152,7 @@ export function useSystemConfig(options: UseSystemConfigOptions = {}) {
     setLoadedLogoUrl,
     setLoading,
   } = useSystemConfigStore()
+  const logo = appendCacheVersionToLogo(config.logo, config.logoCacheVersion)
 
   // Load config from backend
   const loadConfig = useCallback(async () => {
@@ -173,8 +174,6 @@ export function useSystemConfig(options: UseSystemConfigOptions = {}) {
 
   // Preload logo image when URL changes
   useEffect(() => {
-    const logo = appendCacheVersionToLogo(config.logo, config.logoCacheVersion)
-
     // Skip if logo is already loaded
     if (!logo || logo === loadedLogoUrl) return
 
