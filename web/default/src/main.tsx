@@ -28,7 +28,6 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import i18next from 'i18next'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
-import { appendCacheVersionToLogo } from '@/stores/system-config-store'
 import { getStatus } from '@/lib/api'
 import { installBuildMetadata } from '@/lib/build-metadata'
 import '@/lib/dayjs'
@@ -132,12 +131,7 @@ const rootElement = document.getElementById('root')!
       if (saved) {
         const s = JSON.parse(saved)
         if (s?.system_name) apply(s.system_name)
-        if (s?.logo) {
-          const savedLogoVersion = localStorage.getItem('logo_cache_version') || ''
-          applyFaviconToDom(
-            appendCacheVersionToLogo(s.logo as string, savedLogoVersion)
-          )
-        }
+        if (s?.logo) applyFaviconToDom(s.logo)
       }
     } catch {
       /* empty */
@@ -153,17 +147,7 @@ const rootElement = document.getElementById('root')!
             /* empty */
           }
         }
-        if (s?.logo) {
-          const logoVersion = Date.now().toString()
-          try {
-            localStorage.setItem('logo_cache_version', logoVersion)
-          } catch {
-            /* empty */
-          }
-          applyFaviconToDom(
-            appendCacheVersionToLogo(s.logo as string, logoVersion)
-          )
-        }
+        if (s?.logo) applyFaviconToDom(s.logo as string)
       })
       .catch(() => {
         /* empty */

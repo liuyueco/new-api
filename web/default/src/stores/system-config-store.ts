@@ -40,7 +40,6 @@ export interface CurrencyConfig {
 export interface SystemConfig {
   systemName: string
   logo: string
-  logoCacheVersion: string
   footerHtml?: string
   demoSiteEnabled?: boolean
   displayTokenStatEnabled?: boolean
@@ -75,7 +74,6 @@ export const useSystemConfigStore = create<SystemConfigState>()(
       config: {
         systemName: DEFAULT_SYSTEM_NAME,
         logo: DEFAULT_LOGO,
-        logoCacheVersion: '',
         currency: { ...DEFAULT_CURRENCY_CONFIG },
       },
       loading: true,
@@ -108,19 +106,7 @@ export const useSystemConfigStore = create<SystemConfigState>()(
 export const getSystemName = () =>
   useSystemConfigStore.getState().config.systemName
 
-export const appendCacheVersionToLogo = (
-  logo: string,
-  cacheVersion?: string
-) => {
-  if (!logo || !cacheVersion) return logo
-  const separator = logo.includes('?') ? '&' : '?'
-  return `${logo}${separator}v=${cacheVersion}`
-}
-
-export const getLogo = () => {
-  const { logo, logoCacheVersion } = useSystemConfigStore.getState().config
-  return appendCacheVersionToLogo(logo, logoCacheVersion)
-}
+export const getLogo = () => useSystemConfigStore.getState().config.logo
 
 export const getFooterHtml = () =>
   useSystemConfigStore.getState().config.footerHtml
