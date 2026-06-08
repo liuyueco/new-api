@@ -55,7 +55,10 @@ export function getSystemName() {
 export function getLogo() {
   let logo = localStorage.getItem('logo');
   if (!logo) return '/logo.png';
-  return logo;
+  const cacheVersion = localStorage.getItem('logo_cache_version');
+  if (!cacheVersion) return logo;
+  const separator = logo.includes('?') ? '&' : '?';
+  return `${logo}${separator}v=${cacheVersion}`;
 }
 
 export function getUserIdFromLocalStorage() {
