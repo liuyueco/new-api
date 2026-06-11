@@ -20,12 +20,17 @@ func Register(name string, provider Provider) {
 	mu.Lock()
 	defer mu.Unlock()
 	providers[name] = provider
+	delete(customProviderSlugs, name)
 }
 
 // RegisterCustom registers a custom OAuth provider (can be unregistered later)
 func RegisterCustom(name string, provider Provider) {
 	mu.Lock()
 	defer mu.Unlock()
+	if _, exists := providers[name]; exists && !customProviderSlugs[name] {
+		common.SysError("Custom OAuth provider conflicts with built-in provider: " + name)
+		return
+	}
 	providers[name] = provider
 	customProviderSlugs[name] = true
 }
@@ -105,6 +110,10 @@ func LoadCustomProviders() error {
 
 	// Register each custom provider
 	for _, config := range customProviders {
+		if _, exists := providers[config.Slug]; exists {
+			common.SysError("Skipping custom OAuth provider that conflicts with built-in provider: " + config.Slug)
+			continue
+		}
 		provider := NewGenericOAuthProvider(config)
 		RegisterCustom(config.Slug, provider)
 		common.SysLog("Loaded custom OAuth provider: " + config.Name + " (" + config.Slug + ")")

@@ -31,6 +31,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { SiGithub, SiDiscord } from 'react-icons/si'
 import { toast } from 'sonner'
+import { IconGoogle } from '@/assets/brand-icons'
 import { api } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import {
@@ -79,6 +80,7 @@ interface BindingItem {
 
 interface StatusInfo {
   github_oauth?: boolean
+  google_oauth?: boolean
   discord_oauth?: boolean
   oidc_enabled?: boolean
   wechat_login?: boolean
@@ -111,6 +113,13 @@ const BUILTIN_BINDINGS: ReadonlyArray<{
     label: 'GitHub',
     icon: <SiGithub className='h-4 w-4' />,
     statusKey: 'github_oauth',
+  },
+  {
+    key: 'google_id',
+    field: 'google_id',
+    label: 'Google',
+    icon: <IconGoogle className='h-4 w-4' />,
+    statusKey: 'google_oauth',
   },
   {
     key: 'discord_id',
