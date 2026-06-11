@@ -17,8 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
-import { CherryStudio } from '@lobehub/icons'
-import { ArrowRight, Layers3 } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 
@@ -26,19 +25,6 @@ interface HeroProps {
   className?: string
   isAuthenticated?: boolean
 }
-
-const MoreIcon = () => (
-  <svg
-    className='text-primary/70 group-hover:text-primary size-5 shrink-0 transition-colors'
-    viewBox='0 0 24 24'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <circle cx='6' cy='12' r='2' fill='currentColor' />
-    <circle cx='12' cy='12' r='2' fill='currentColor' />
-    <circle cx='18' cy='12' r='2' fill='currentColor' />
-  </svg>
-)
 
 export function Hero(props: HeroProps) {
   const { t } = useTranslation()
@@ -147,66 +133,6 @@ export function Hero(props: HeroProps) {
                 {item}
               </span>
             ))}
-          </div>
-
-          <div
-            className='landing-animate-fade-up border-border/50 bg-card/70 mt-10 w-full max-w-3xl rounded-3xl border p-4 text-left opacity-0 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.45)] backdrop-blur-xl'
-            style={{ animationDelay: '240ms' }}
-          >
-            <div className='mb-4 flex items-center gap-3 px-1'>
-              <div className='bg-primary/10 text-primary flex size-9 items-center justify-center rounded-2xl'>
-                <Layers3 className='size-4' strokeWidth={1.8} />
-              </div>
-              <div>
-                <span className='text-foreground text-xs font-bold tracking-[0.15em] uppercase'>
-                  {t('Supported Applications')}
-                </span>
-                <p className='text-muted-foreground mt-0.5 text-xs leading-relaxed'>
-                  {t(
-                    'Supports one-click configuration and perfectly adapts to NewAPI multi-protocol configuration.'
-                  )}
-                </p>
-              </div>
-            </div>
-            <div className='grid gap-2 sm:grid-cols-3'>
-              <a
-                href='https://cherry-ai.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'
-              >
-                <CherryStudio.Color size={24} className='shrink-0' />
-                <span>Cherry Studio</span>
-              </a>
-              <a
-                href='https://ccswitch.io'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'
-              >
-                <img
-                  src='https://ccswitch.io/favicon.png'
-                  alt='CC Switch'
-                  className='size-6 shrink-0 rounded-md object-contain'
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none'
-                    const fallback = e.currentTarget.nextSibling as HTMLElement
-                    if (fallback) fallback.style.display = 'flex'
-                  }}
-                />
-                <span
-                  style={{ display: 'none' }}
-                  className='bg-primary/10 text-primary size-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold'
-                >
-                  CC
-                </span>
-                <span>CC Switch</span>
-              </a>
-              <div className='group border-border/50 bg-background/70 hover:border-primary/35 hover:bg-primary/8 flex cursor-default items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5'>
-                <MoreIcon />
-                <span>{t('More Apps')}</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
