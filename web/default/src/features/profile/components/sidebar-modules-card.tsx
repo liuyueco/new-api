@@ -16,12 +16,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { LayoutDashboard } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { api } from '@/lib/api'
+import { useStatus } from '@/hooks/use-status'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -31,6 +33,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
+import { parseSidebarModulesAdmin } from '@/features/system-settings/maintenance/config'
 
 type SidebarModuleConfig = {
   enabled: boolean
@@ -49,108 +52,159 @@ type SectionDef = {
 export function SidebarModulesCard() {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
-  const [config, setConfig] = useState<SidebarModulesConfig>({})
+  const [draftConfig, setDraftConfig] = useState<SidebarModulesConfig | null>(
+    null
+  )
   const currentUser = useAuthStore((s) => s.auth.user)
   const setUser = useAuthStore((s) => s.auth.setUser)
+  const { status } = useStatus()
 
-  const sectionDefs: SectionDef[] = [
-    {
-      key: 'chat',
-      title: t('Chat Area'),
-      description: t('Playground and chat functions'),
-      modules: [
-        {
-          key: 'playground',
-          title: t('Playground'),
-          description: t('AI model testing environment'),
-        },
-        {
-          key: 'chat',
-          title: t('Chat'),
-          description: t('Chat session management'),
-        },
-      ],
-    },
-    {
-      key: 'console',
-      title: t('Console Area'),
-      description: t('Data management and log viewing'),
-      modules: [
-        {
-          key: 'detail',
-          title: t('Dashboard'),
-          description: t('System data statistics'),
-        },
-        {
-          key: 'token',
-          title: t('Token Management'),
-          description: t('API token management'),
-        },
-        {
-          key: 'log',
-          title: t('Usage Logs'),
-          description: t('API usage records'),
-        },
-        {
-          key: 'midjourney',
-          title: t('Drawing Logs'),
-          description: t('Drawing task records'),
-        },
-        {
-          key: 'task',
-          title: t('Task Logs'),
-          description: t('System task records'),
-        },
-      ],
-    },
-    {
-      key: 'personal',
-      title: t('Personal Center Area'),
-      description: t('User personal functions'),
-      modules: [
-        {
-          key: 'topup',
-          title: t('Wallet Management'),
-          description: t('Balance and top-up management'),
-        },
-        {
-          key: 'personal',
-          title: t('Personal Settings'),
-          description: t('Personal info settings'),
-        },
-      ],
-    },
-  ]
+  const sectionDefs: SectionDef[] = useMemo(
+    () => [
+      {
+        key: 'chat',
+        title: t('Chat Area'),
+        description: t('Playground and chat functions'),
+        modules: [
+          {
+            key: 'playground',
+            title: t('Playground'),
+            description: t('AI model testing environment'),
+          },
+          {
+            key: 'chat',
+            title: t('Chat'),
+            description: t('Chat session management'),
+          },
+        ],
+      },
+      {
+        key: 'console',
+        title: t('Console Area'),
+        description: t('Data management and log viewing'),
+        modules: [
+          {
+            key: 'detail',
+            title: t('Dashboard'),
+            description: t('System data statistics'),
+          },
+          {
+            key: 'token',
+            title: t('Token Management'),
+            description: t('API token management'),
+          },
+          {
+            key: 'log',
+            title: t('Usage Logs'),
+            description: t('API usage records'),
+          },
+          {
+            key: 'midjourney',
+            title: t('Drawing Logs'),
+            description: t('Drawing task records'),
+          },
+          {
+            key: 'task',
+            title: t('Task Logs'),
+            description: t('System task records'),
+          },
+        ],
+      },
+      {
+        key: 'personal',
+        title: t('Personal Center Area'),
+        description: t('User personal functions'),
+        modules: [
+          {
+            key: 'topup',
+            title: t('Wallet Management'),
+            description: t('Balance and top-up management'),
+          },
+          {
+            key: 'personal',
+            title: t('Personal Settings'),
+            description: t('Personal info settings'),
+          },
+        ],
+      },
+    ],
+    [t]
+  )
 
-  const loadConfig = useCallback(async () => {
-    try {
-      const res = await api.get('/api/user/self')
-      if (res.data.success && res.data.data?.sidebar_modules) {
-        const raw = res.data.data.sidebar_modules
-        const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw
-        setConfig(parsed)
-      } else {
-        const defaults: SidebarModulesConfig = {}
-        for (const sec of sectionDefs) {
-          defaults[sec.key] = { enabled: true }
-          for (const mod of sec.modules) defaults[sec.key][mod.key] = true
-        }
-        setConfig(defaults)
-      }
-    } catch {
-      /* ignore */
+  const adminConfig = useMemo(
+    () =>
+      parseSidebarModulesAdmin(
+        status?.SidebarModulesAdmin as string | null | undefined
+      ),
+    [status?.SidebarModulesAdmin]
+  )
+
+  const visibleSectionDefs = useMemo(
+    () =>
+      sectionDefs
+        .filter((section) => adminConfig[section.key]?.enabled !== false)
+        .map((section) => ({
+          ...section,
+          modules: section.modules.filter(
+            (mod) => adminConfig[section.key]?.[mod.key] !== false
+          ),
+        }))
+        .filter((section) => section.modules.length > 0),
+    [adminConfig, sectionDefs]
+  )
+
+  const createDefaultConfig = useCallback((): SidebarModulesConfig => {
+    const defaults: SidebarModulesConfig = {}
+    for (const section of visibleSectionDefs) {
+      defaults[section.key] = { enabled: true }
+      for (const mod of section.modules) defaults[section.key][mod.key] = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return defaults
+  }, [visibleSectionDefs])
 
-  useEffect(() => {
-    loadConfig()
-  }, [loadConfig])
+  const filterConfigByAdmin = useCallback(
+    (value: SidebarModulesConfig): SidebarModulesConfig => {
+      const filtered = createDefaultConfig()
+      for (const section of visibleSectionDefs) {
+        const sectionValue = value[section.key]
+        if (!sectionValue) continue
+        filtered[section.key].enabled = sectionValue.enabled !== false
+        for (const mod of section.modules) {
+          filtered[section.key][mod.key] = sectionValue[mod.key] !== false
+        }
+      }
+      return filtered
+    },
+    [createDefaultConfig, visibleSectionDefs]
+  )
+
+  const { data: savedConfig } = useQuery({
+    queryKey: ['profile-sidebar-modules'],
+    queryFn: async () => {
+      const res = await api.get('/api/user/self')
+      if (!res.data.success || !res.data.data?.sidebar_modules) return null
+      const raw = res.data.data.sidebar_modules
+      return (
+        typeof raw === 'string' ? JSON.parse(raw) : raw
+      ) as SidebarModulesConfig
+    },
+  })
+
+  const config = useMemo(
+    () =>
+      filterConfigByAdmin(draftConfig ?? savedConfig ?? createDefaultConfig()),
+    [createDefaultConfig, draftConfig, filterConfigByAdmin, savedConfig]
+  )
 
   const toggleSection = (sectionKey: string, val: boolean) => {
-    setConfig((prev) => ({
+    setDraftConfig((prev) => ({
+      ...config,
       ...prev,
-      [sectionKey]: { ...prev[sectionKey], enabled: val },
+      [sectionKey]: {
+        ...config[sectionKey],
+        ...prev?.[sectionKey],
+        enabled: val,
+      },
     }))
   }
 
@@ -159,22 +213,27 @@ export function SidebarModulesCard() {
     moduleKey: string,
     val: boolean
   ) => {
-    setConfig((prev) => ({
+    setDraftConfig((prev) => ({
+      ...config,
       ...prev,
-      [sectionKey]: { ...prev[sectionKey], [moduleKey]: val },
+      [sectionKey]: {
+        ...config[sectionKey],
+        ...prev?.[sectionKey],
+        [moduleKey]: val,
+      },
     }))
   }
 
   const handleSave = async () => {
     setLoading(true)
     try {
-      const serialized = JSON.stringify(config)
+      const filteredConfig = filterConfigByAdmin(config)
+      const serialized = JSON.stringify(filteredConfig)
       const res = await api.put('/api/user/self', {
         sidebar_modules: serialized,
       })
       if (res.data.success) {
-        // Sync to auth-store so useSidebarConfig re-runs and the sidebar
-        // updates immediately without needing a page refresh.
+        setDraftConfig(filteredConfig)
         if (currentUser) {
           setUser({ ...currentUser, sidebar_modules: serialized })
         }
@@ -190,12 +249,7 @@ export function SidebarModulesCard() {
   }
 
   const handleReset = () => {
-    const defaults: SidebarModulesConfig = {}
-    for (const sec of sectionDefs) {
-      defaults[sec.key] = { enabled: true }
-      for (const mod of sec.modules) defaults[sec.key][mod.key] = true
-    }
-    setConfig(defaults)
+    setDraftConfig(createDefaultConfig())
     toast.success(t('Reset to default configuration'))
   }
 
@@ -217,7 +271,7 @@ export function SidebarModulesCard() {
         </div>
       </CardHeader>
       <CardContent className='space-y-4 p-3 sm:space-y-5 sm:p-5'>
-        {sectionDefs.map((section) => {
+        {visibleSectionDefs.map((section) => {
           const sectionEnabled = config[section.key]?.enabled !== false
           return (
             <div
