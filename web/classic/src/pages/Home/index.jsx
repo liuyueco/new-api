@@ -25,14 +25,18 @@ import { StatusContext } from '../../context/Status';
 import { useActualTheme } from '../../context/Theme';
 import { marked } from 'marked';
 import { useTranslation } from 'react-i18next';
+import { IconArrowRight, IconFile, IconGithubLogo } from '@douyinfe/semi-icons';
 import {
-  IconArrowRight,
-  IconBolt,
-  IconFile,
-  IconGithubLogo,
-} from '@douyinfe/semi-icons';
+  BarChart3,
+  Code,
+  DollarSign,
+  Settings,
+  Shield,
+  Zap,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import NoticeModal from '../../components/layout/NoticeModal';
+import FooterBar from '../../components/layout/Footer';
 
 const Home = () => {
   const { t, i18n } = useTranslation();
@@ -47,97 +51,95 @@ const Home = () => {
   const systemName = getSystemName();
   const logo = getLogo();
 
-  const planCards = [
+  const isAuthenticated = Boolean(localStorage.getItem('user'));
+
+  const stats = [
     {
-      badge: t('快速起步'),
-      title: 'Standard Plan',
-      subtitle: t('学生和轻量级开发者'),
-      price: '¥399',
-      cadence: '/4周',
-      points: [
-        t('周额度 $110'),
-        t('相当于全站 API 计费额外尊享 9 折'),
-        t('最多 5 个并发'),
-      ],
-      highlighted: false,
+      value: '50+',
+      label: t('upstream services integrated'),
     },
     {
-      badge: t('推荐选择'),
-      title: 'Premium Plan',
-      subtitle: t('专业开发者首选'),
-      price: '¥899',
-      cadence: '/4周',
-      points: [
-        t('周额度 $260'),
-        t('相当于全站 API 计费额外尊享 86 折'),
-        t('最多 5 个并发'),
-      ],
-      highlighted: true,
+      value: '100+',
+      label: t('model billing support'),
     },
     {
-      badge: t('长期扩展'),
-      title: 'Professional Plan',
-      subtitle: t('顶尖开发者与极客'),
-      price: '¥1799',
-      cadence: '/4周',
-      points: [
-        t('周额度 $530'),
-        t('相当于全站 API 计费额外尊享 84 折'),
-        t('最多 5 个并发'),
-      ],
-      highlighted: false,
+      value: '50+',
+      label: t('compatible API routes'),
+    },
+    {
+      value: '10+',
+      label: t('scheduling controls'),
     },
   ];
 
-  const reviewCards = [
+  const featureCards = [
     {
-      name: 'David Z.',
-      role: t('全栈工程师 @ 大型互联网公司'),
-      quote: t('每笔消耗在后台都能对上，余额变动有明细，计费规则看得懂，比用过的一些中转站实在多了。'),
+      number: '01',
+      title: t('Lightning Fast'),
+      description: t(
+        'Optimized network architecture ensures millisecond response times',
+      ),
+      icon: <Zap size={20} strokeWidth={1.8} />,
+      visual: [
+        t('Register an account'),
+        t('Recharge on demand'),
+        t('Create API key'),
+        t('Start calling'),
+      ],
     },
     {
-      name: t('陈工'),
-      role: t('前端架构师 @ 生活服务平台'),
-      quote: t('日常写代码连着跑，首 token 和整段响应都够快，高峰期也没有明显变慢，体验接近官方直连。'),
+      number: '02',
+      title: t('Secure & Reliable'),
+      description: t(
+        'Enterprise-grade security with comprehensive permission management',
+      ),
+      icon: <Shield size={20} strokeWidth={1.8} />,
+      visual: [
+        t('Recharge on demand'),
+        t('Transparent Billing'),
+        t('Cost Tracking'),
+      ],
     },
     {
-      name: t('吴总监'),
-      role: t('研发总监 @ 金融科技公司'),
-      quote: t('Cursor、Continue 这些工具改个 Base URL 就能用，协议兼容到位，团队迁移基本只改一行配置。'),
-    },
-    {
-      name: 'Sarah L.',
-      role: t('独立开发者 / iOS 专家'),
-      quote: t('一个人做项目，不想维护一堆密钥和节点。一个账号常用模型都能用，充值查量都在同一页，真的省事。'),
-    },
-    {
-      name: t('李先生'),
-      role: t('技术负责人 @ 独角兽企业'),
-      quote: t('业务 7×24 在线，最怕半夜接口挂。稳定性不错，调用日志也能追溯，排查比自己在那试错快多了。'),
-    },
-    {
-      name: 'Alice S.',
-      role: t('算法工程师 @ 社交媒体平台'),
-      quote: t('Claude、GPT、Gemini 走同一入口，新模型上线也跟得比较勤，不用每个厂商单独找渠道、配 key。'),
+      number: '03',
+      title: t('Developer Friendly'),
+      description: t(
+        'Compatible API routes for common AI application workflows',
+      ),
+      icon: <Code size={20} strokeWidth={1.8} />,
+      visual: [
+        t('Copy Base URL'),
+        t('Paste API key'),
+        t('Choose model'),
+        t('Use now'),
+      ],
     },
   ];
 
-  const faqs = [
+  const steps = [
     {
-      question: t('什么是 {{name}}？', { name: systemName }),
-      answer: t('{{name}} 是面向开发者的 AI 编程工作台，提供代码辅助、智能问答、团队协作、订阅与按量购买等功能，帮助开发者更高效地完成日常研发工作。', { name: systemName }),
+      number: '01',
+      title: t('Configure'),
+      description: t(
+        'Add your API keys, set up channels and configure access permissions',
+      ),
+      icon: <Settings size={24} strokeWidth={1.6} />,
     },
     {
-      question: t('为什么选择 {{name}}？', { name: systemName }),
-      answer: t('我们把常用 AI 开发能力、计费管理和客户支持整合在同一个软件平台里，减少工具切换成本，适合个人开发者和团队持续使用。'),
+      number: '02',
+      title: t('Connect'),
+      description: t(
+        'Connect through OpenAI, Claude, Gemini, and other compatible API routes',
+      ),
+      icon: <Zap size={24} strokeWidth={1.6} />,
     },
     {
-      question: t('服务稳定性如何保障？'),
-      answer: t('我们通过持续监控、容量规划、故障恢复和性能优化来保障稳定性，核心能力面向高频开发场景持续维护，企业版还提供更完善的服务支持。'),
-    },
-    {
-      question: t('如何开始使用服务？'),
-      answer: t('注册账号后选择合适的套餐，即可开始使用工作台能力。平台提供清晰的上手说明、购买入口和客服支持，新用户也可以先体验再决定是否订阅。'),
+      number: '03',
+      title: t('Monitor'),
+      description: t(
+        'Track usage, costs and performance with real-time analytics',
+      ),
+      icon: <BarChart3 size={24} strokeWidth={1.6} />,
     },
   ];
 
@@ -210,7 +212,11 @@ const Home = () => {
             <header className='classic-home-v2-nav-wrap'>
               <div className='classic-home-v2-nav'>
                 <Link to='/' className='classic-home-v2-brand'>
-                  <img src={logo} alt={systemName} className='classic-home-v2-logo' />
+                  <img
+                    src={logo}
+                    alt={systemName}
+                    className='classic-home-v2-logo'
+                  />
                   <span>{systemName}</span>
                 </Link>
 
@@ -220,16 +226,19 @@ const Home = () => {
                       {t('文档')}
                     </a>
                   )}
-                  <a href='#plans'>{t('方案')}</a>
-                  <a href='#reviews'>{t('用户评价')}</a>
-                  <a href='#faq'>{t('常见问题')}</a>
-                  <a href='#contact'>{t('联系我们')}</a>
+                  <a href='#features'>{t('Core Features')}</a>
+                  <a href='#workflow'>{t('How It Works')}</a>
+                  <a href='#contact'>{t('Get Started')}</a>
                 </nav>
 
                 <div className='classic-home-v2-nav-action'>
-                  <Link to='/login'>
-                    <Button theme='solid' type='primary' className='classic-home-v2-login-btn'>
-                      {t('登录')}
+                  <Link to={isAuthenticated ? '/console' : '/login'}>
+                    <Button
+                      theme='solid'
+                      type='primary'
+                      className='classic-home-v2-login-btn'
+                    >
+                      {isAuthenticated ? t('Go to Dashboard') : t('登录')}
                     </Button>
                   </Link>
                 </div>
@@ -239,143 +248,117 @@ const Home = () => {
             <section className='classic-home-v2-hero'>
               <div className='classic-home-v2-hero-copy'>
                 <span className='classic-home-v2-pill'>
-                  {t('统一 AI 模型中转入口')}
+                  <span className='classic-home-v2-pill-dot' />
+                  {t('AI Application Infrastructure Foundation')}
                 </span>
                 <h1>
-                  <span>{t('把主流模型能力')}</span>
+                  <span>{t('Unified API Gateway for')}</span>
                   <span className='classic-home-v2-gradient-text'>
-                    {t('整理成一个稳定可用的 API 入口')}
+                    {t('Vast Range of AI Models')}
                   </span>
                 </h1>
                 <p>
-                  {t('通过统一 token 和兼容接口，直接调用主流大模型能力，降低接入门槛和使用成本。')}
+                  {t(
+                    'Access a vast selection of models via a standard, unified API protocol. Power AI applications, manage digital assets, and connect the Future.',
+                  )}
                 </p>
 
                 <div className='classic-home-v2-actions'>
-                  <Link to='/console'>
+                  <Link to={isAuthenticated ? '/console' : '/register'}>
                     <Button
                       theme='solid'
                       type='primary'
                       size='large'
-                      icon={<IconBolt />}
+                      icon={<IconArrowRight />}
                       className='classic-home-v2-primary-btn'
                     >
-                      {t('立即体验')}
+                      {isAuthenticated
+                        ? t('Go to Dashboard')
+                        : t('Register and use now')}
                     </Button>
                   </Link>
+                  {!isAuthenticated && (
+                    <Link to='/pricing'>
+                      <Button
+                        size='large'
+                        className='classic-home-v2-secondary-btn'
+                      >
+                        {t('View affordable pricing')}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
+                <div className='classic-home-v2-quick-tags'>
+                  {[
+                    t('Register an account'),
+                    t('Recharge on demand'),
+                    t('Copy API config'),
+                  ].map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
                 </div>
               </div>
             </section>
 
             <section className='classic-home-v2-hero-metrics'>
               <div className='classic-home-v2-metrics'>
-                <div>
-                  <strong>40+</strong>
-                  <span>{t('个上游供应商')}</span>
-                </div>
-                <div>
-                  <strong>99.9%</strong>
-                  <span>{t('中转稳定性')}</span>
-                </div>
-                <div>
-                  <strong>OpenAI</strong>
-                  <span>{t('兼容 OpenAI 风格调用')}</span>
-                </div>
-                <div>
-                  <strong>Token</strong>
-                  <span>{t('开通 token 后即可开始调用')}</span>
-                </div>
+                {stats.map((item) => (
+                  <div key={item.label}>
+                    <strong>{item.value}</strong>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
               </div>
             </section>
 
-            <section className='classic-home-v2-section' id='plans'>
-              <div className='classic-home-v2-section-head classic-home-v2-section-head-center'>
-                <span className='classic-home-v2-section-badge'>{t('套餐订阅')}</span>
-                <h2>{t('选择适合你的订阅方案')}</h2>
+            <section className='classic-home-v2-section' id='features'>
+              <div className='classic-home-v2-section-head classic-home-v2-section-head-split'>
+                <div>
+                  <span className='classic-home-v2-section-badge'>
+                    {t('Core Features')}
+                  </span>
+                  <h2>
+                    {t('Built for developers,')}
+                    <span>{t('designed for scale')}</span>
+                  </h2>
+                </div>
                 <p>
-                  {t('覆盖个人试用、稳定开发与企业协作，先把用户最关心的额度、折扣、并发和服务边界讲清楚。')}
+                  {t(
+                    'Access a vast selection of models via a standard, unified API protocol. Power AI applications, manage digital assets, and connect the Future.',
+                  )}
                 </p>
               </div>
 
-              <div className='classic-home-v2-plan-grid'>
-                {planCards.map((item) => (
+              <div className='classic-home-v2-feature-grid'>
+                {featureCards.map((item) => (
                   <article
-                    className={`classic-home-v2-plan-card${item.highlighted ? ' classic-home-v2-plan-card-highlighted' : ''}`}
-                    key={item.title}
+                    className='classic-home-v2-feature-card'
+                    key={item.number}
                   >
-                    <div
-                      className={`classic-home-v2-plan-badge${item.highlighted ? ' classic-home-v2-plan-badge-highlighted' : ''}`}
-                    >
-                      {item.badge}
+                    <div className='classic-home-v2-feature-head'>
+                      <span className='classic-home-v2-feature-icon'>
+                        {item.icon}
+                      </span>
+                      <span className='classic-home-v2-feature-number'>
+                        {item.number}
+                      </span>
                     </div>
                     <h3>{item.title}</h3>
-                    <p className='classic-home-v2-plan-subtitle'>{item.subtitle}</p>
-                    <div className='classic-home-v2-plan-price'>
-                      <strong>{item.price}</strong>
-                      <span>{item.cadence}</span>
-                    </div>
-                    <div className='classic-home-v2-plan-divider' />
-                    <ul>
-                      {item.points.map((point) => (
-                        <li key={point}>{point}</li>
-                      ))}
-                    </ul>
-                    <Link to='/login'>
-                      <Button
-                        theme='solid'
-                        type={item.highlighted ? 'primary' : 'tertiary'}
-                        className={`classic-home-v2-plan-btn${item.highlighted ? '' : ' classic-home-v2-plan-btn-muted'}`}
-                      >
-                        {t('登录订阅')}
-                      </Button>
-                    </Link>
-                  </article>
-                ))}
-
-                <article className='classic-home-v2-enterprise-card'>
-                  <div className='classic-home-v2-enterprise-badge'>
-                    {t('企业协作')}
-                  </div>
-                  <h3>{t('企业方案')}</h3>
-                  <p>
-                    {t('根据团队规模、额度与并发灵活适配配置')}
-                  </p>
-                  <ul>
-                    <li>{t('按团队规模定制额度与并发')}</li>
-                    <li>{t('支持专属 API 接入与用量管理')}</li>
-                    <li>{t('专属售后支持与故障优先处理')}</li>
-                    <li>{t('支持合同、发票与企业结算')}</li>
-                  </ul>
-                  <Button theme='solid' type='warning' className='classic-home-v2-enterprise-btn'>
-                    {t('咨询企业方案')}
-                  </Button>
-                </article>
-              </div>
-            </section>
-
-            <section className='classic-home-v2-section' id='reviews'>
-              <div className='classic-home-v2-section-head classic-home-v2-section-head-center'>
-                <span className='classic-home-v2-section-badge'>{t('用户评价')}</span>
-                <h2>{t('用户怎么说')}</h2>
-                <p>
-                  {t('做 API 中转，真正让人留下来的，从来都是计费透不透明、响应够不够快、兼容广不广、用起来省不省心。')}
-                </p>
-              </div>
-
-              <div className='classic-home-v2-review-grid'>
-                {reviewCards.map((item, index) => (
-                  <article
-                    className={`classic-home-v2-review-card classic-home-v2-review-card-${(index % 3) + 1}`}
-                    key={`${item.name}-${index}`}
-                  >
-                    <p>{item.quote}</p>
-                    <div className='classic-home-v2-review-user'>
-                      <div className='classic-home-v2-review-avatar'>
-                        {String(item.name).slice(0, 1)}
-                      </div>
+                    <p>{item.description}</p>
+                    <div className='classic-home-v2-feature-visual'>
+                      {item.number === '02' && (
+                        <span className='classic-home-v2-price-icon'>
+                          <DollarSign size={30} strokeWidth={1.5} />
+                        </span>
+                      )}
                       <div>
-                        <strong>{item.name}</strong>
-                        <span>{item.role}</span>
+                        {item.visual.map((label, index) => (
+                          <span key={label}>
+                            {label}
+                            {item.number === '01' && <em>0{index + 1}</em>}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </article>
@@ -383,67 +366,96 @@ const Home = () => {
               </div>
             </section>
 
-            <section className='classic-home-v2-section classic-home-v2-faq-section' id='faq'>
+            <section className='classic-home-v2-section' id='workflow'>
               <div className='classic-home-v2-section-head classic-home-v2-section-head-center'>
-                <span className='classic-home-v2-section-badge'>{t('常见问题')}</span>
-                <h2>{t('有疑问？我们来解答')}</h2>
+                <span className='classic-home-v2-section-badge'>
+                  {t('How It Works')}
+                </span>
+                <h2>{t('Three steps to get started')}</h2>
               </div>
 
-              <div className='classic-home-v2-faq-list'>
-                {faqs.map((item, index) => (
-                  <details className='classic-home-v2-faq-item' key={item.question} open={index === 0}>
-                    <summary>
-                      <span>{item.question}</span>
-                      <span>+</span>
-                    </summary>
-                    <p>{item.answer}</p>
-                  </details>
+              <div className='classic-home-v2-step-grid'>
+                {steps.map((step) => (
+                  <article
+                    className='classic-home-v2-step-card'
+                    key={step.number}
+                  >
+                    <div className='classic-home-v2-step-head'>
+                      <span className='classic-home-v2-step-icon'>
+                        {step.icon}
+                      </span>
+                      <span>{step.number}</span>
+                    </div>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </article>
                 ))}
               </div>
             </section>
 
-            <section className='classic-home-v2-contact' id='contact'>
-              <div className='classic-home-v2-contact-copy'>
-                <span className='classic-home-v2-section-badge'>{t('联系我们')}</span>
-                <h2>{t('先获取 token，再开始调用')}</h2>
-                <p>
-                  {t('如果你已经有现成客户端或应用，只需要获取 token 并替换 Base URL，就可以开始调用。')}
-                </p>
-              </div>
+            {!isAuthenticated && (
+              <section className='classic-home-v2-contact' id='contact'>
+                <div className='classic-home-v2-contact-copy'>
+                  <span className='classic-home-v2-section-badge'>
+                    {t('Get Started')}
+                  </span>
+                  <h2>
+                    {t('Ready to simplify')}
+                    <span>{t('your AI integration?')}</span>
+                  </h2>
+                  <p>
+                    {t(
+                      'Deploy your own gateway and start routing requests through your configured upstream services.',
+                    )}
+                  </p>
+                </div>
 
-              <div className='classic-home-v2-contact-actions'>
-                <Link to='/console'>
-                  <Button theme='solid' type='primary' size='large' icon={<IconArrowRight />}>
-                    {t('立即获取 token')}
-                  </Button>
-                </Link>
-                {docsLink ? (
-                  <Button
-                    size='large'
-                    icon={<IconFile />}
-                    onClick={() => window.open(docsLink, '_blank')}
-                  >
-                    {t('文档')}
-                  </Button>
-                ) : (
-                  isDemoSiteMode &&
-                  statusState?.status?.version && (
+                <div className='classic-home-v2-contact-actions'>
+                  <Link to='/register'>
+                    <Button
+                      theme='solid'
+                      type='primary'
+                      size='large'
+                      icon={<IconArrowRight />}
+                    >
+                      {t('Get Started')}
+                    </Button>
+                  </Link>
+                  <Link to='/pricing'>
+                    <Button size='large'>{t('View Pricing')}</Button>
+                  </Link>
+                  {docsLink && (
                     <Button
                       size='large'
-                      icon={<IconGithubLogo />}
-                      onClick={() =>
-                        window.open(
-                          'https://github.com/QuantumNous/new-api',
-                          '_blank',
-                        )
-                      }
+                      icon={<IconFile />}
+                      onClick={() => window.open(docsLink, '_blank')}
                     >
-                      {statusState.status.version}
+                      {t('文档')}
                     </Button>
-                  )
-                )}
-              </div>
-            </section>
+                  )}
+                  {!docsLink &&
+                    isDemoSiteMode &&
+                    statusState?.status?.version && (
+                      <Button
+                        size='large'
+                        icon={<IconGithubLogo />}
+                        onClick={() =>
+                          window.open(
+                            'https://github.com/QuantumNous/new-api',
+                            '_blank',
+                          )
+                        }
+                      >
+                        {statusState.status.version}
+                      </Button>
+                    )}
+                </div>
+              </section>
+            )}
+
+            <div className='classic-home-v2-footer'>
+              <FooterBar />
+            </div>
           </div>
         </div>
       ) : (
