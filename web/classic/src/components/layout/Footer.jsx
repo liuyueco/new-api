@@ -23,6 +23,28 @@ import { Typography } from '@douyinfe/semi-ui';
 import { getFooterHTML, getLogo, getSystemName } from '../../helpers';
 import { StatusContext } from '../../context/Status';
 
+const FooterCredit = ({ developerName }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className='text-sm flex-shrink-0'>
+      <span className='!text-semi-color-text-1'>{t('设计与开发由')}&nbsp;</span>
+      <span className='!text-semi-color-primary font-medium'>
+        {developerName}
+      </span>
+      <span className='!text-semi-color-text-1'>，{t('基于')}&nbsp;</span>
+      <a
+        href='https://github.com/QuantumNous/new-api'
+        target='_blank'
+        rel='noopener noreferrer'
+        className='!text-semi-color-primary font-medium'
+      >
+        New API (QuantumNous)
+      </a>
+    </div>
+  );
+};
+
 const FooterBar = () => {
   const { t } = useTranslation();
   const [footer, setFooter] = useState(getFooterHTML());
@@ -194,20 +216,7 @@ const FooterBar = () => {
               © {currentYear} {systemName}. {t('版权所有')}
             </Typography.Text>
           </div>
-
-          <div className='text-sm'>
-            <span className='!text-semi-color-text-1'>
-              {t('设计与开发由')}{' '}
-            </span>
-            <a
-              href='https://github.com/QuantumNous/new-api'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='!text-semi-color-primary font-medium'
-            >
-       xxxxxx
-            </a>
-          </div>
+          <FooterCredit developerName={systemName} />
         </div>
       </footer>
     ),
@@ -227,19 +236,7 @@ const FooterBar = () => {
               className='custom-footer na-cb6feafeb3990c78 text-sm !text-semi-color-text-1'
               dangerouslySetInnerHTML={{ __html: footer }}
             ></div>
-            <div className='text-sm flex-shrink-0'>
-              <span className='!text-semi-color-text-1'>
-                {t('设计与开发由')}{' '}
-              </span>
-              <a
-                href='https://github.com/QuantumNous/new-api'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='!text-semi-color-primary font-medium'
-              >
-                YAQO WORK
-              </a>
-            </div>
+            <FooterCredit developerName={systemName} />
           </div>
         </footer>
       ) : (

@@ -66,6 +66,22 @@ body {
 }
 
 .classic-home-v2 {
+  --semi-color-text-0: rgba(248, 250, 252, 0.96);
+  --semi-color-text-1: rgba(244, 244, 245, 0.84);
+  --semi-color-text-2: rgba(228, 228, 231, 0.68);
+  --semi-color-text-3: rgba(212, 212, 216, 0.52);
+  --semi-color-fill-0: rgba(255, 255, 255, 0.06);
+  --semi-color-fill-1: rgba(255, 255, 255, 0.12);
+  --semi-color-fill-2: rgba(255, 255, 255, 0.18);
+  --semi-color-bg-0: #101010;
+  --semi-color-bg-1: #151515;
+  --semi-color-bg-2: #1c1c1c;
+  --semi-color-bg-3: #242424;
+  --semi-color-bg-4: #2a2a2a;
+  --semi-color-bg-overlay: #181818;
+  --semi-color-border: rgba(255, 255, 255, 0.12);
+  --semi-color-primary: #4aa7ff;
+  --semi-color-primary-hover: #7cc4ff;
   position: relative;
   min-height: 100vh;
   background:
@@ -176,24 +192,84 @@ body {
 .classic-home-v2-links {
   display: flex;
   justify-content: center;
-  gap: 34px;
+  gap: 8px;
 }
 
 .classic-home-v2-links a {
-  color: rgba(244, 244, 245, 0.82);
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 12px;
+  color: rgba(244, 244, 245, 0.86);
   text-decoration: none;
   font-size: 0.97rem;
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
 .classic-home-v2-links a:hover {
   color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.classic-home-v2-login-btn {
-  min-width: 94px;
-  border-radius: 14px !important;
-  background: linear-gradient(135deg, #38bdf8, #3b82f6) !important;
+.classic-home-v2-links a:focus-visible {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  outline: 2px solid rgba(74, 167, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.classic-home-v2-nav-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.classic-home-v2-nav-action > div {
+  gap: 6px;
+}
+
+.classic-home-v2-nav-action .semi-button {
+  color: rgba(244, 244, 245, 0.9) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.classic-home-v2-nav-action .semi-button:hover,
+.classic-home-v2-nav-action .semi-button:focus {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.classic-home-v2-nav-action .semi-button .semi-button-content,
+.classic-home-v2-nav-action .semi-button .semi-typography,
+.classic-home-v2-nav-action .semi-button .semi-typography span,
+.classic-home-v2-nav-action .semi-button span,
+.classic-home-v2-nav-action .semi-button svg,
+.classic-home-v2-nav-action .semi-button .lucide {
+  color: inherit !important;
+  stroke: currentColor;
+}
+
+.classic-home-v2-nav-action .semi-button .semi-typography,
+.classic-home-v2-nav-action .semi-button .semi-typography span {
+  color: rgba(244, 244, 245, 0.9) !important;
+}
+
+.classic-home-v2 h1,
+.classic-home-v2 h2,
+.classic-home-v2 h3,
+.classic-home-v2 h4,
+.classic-home-v2 strong {
+  color: #f8fafc;
+}
+
+.classic-home-v2 p,
+.classic-home-v2 li,
+.classic-home-v2 summary {
+  color: rgba(228, 228, 231, 0.78);
 }
 
 .classic-home-v2-hero {
@@ -940,6 +1016,10 @@ body {
 }
 
 .classic-home-v2-footer {
+  --semi-color-text-0: rgba(248, 250, 252, 0.96);
+  --semi-color-text-1: rgba(244, 244, 245, 0.84);
+  --semi-color-text-2: rgba(228, 228, 231, 0.68);
+  --semi-color-primary: #4aa7ff;
   margin: 54px calc((100% - 100vw) / 2) -96px;
   color: rgba(244, 244, 245, 0.82);
 }
@@ -952,11 +1032,21 @@ body {
 .classic-home-v2-footer .semi-typography span,
 .classic-home-v2-footer span,
 .classic-home-v2-footer a {
-  color: rgba(244, 244, 245, 0.72) !important;
+  color: rgba(244, 244, 245, 0.82) !important;
+}
+
+.classic-home-v2-footer .semi-typography,
+.classic-home-v2-footer .semi-typography span {
+  color: rgba(244, 244, 245, 0.7) !important;
+}
+
+.classic-home-v2-footer .font-medium,
+.classic-home-v2-footer a.font-medium {
+  color: #4aa7ff !important;
 }
 
 .classic-home-v2-footer a:hover {
-  color: #4aa7ff !important;
+  color: #7cc4ff !important;
 }
 
 @media (max-width: 1180px) {
@@ -1007,31 +1097,164 @@ body {
 
 @media (max-width: 720px) {
   .classic-home-v2-container {
+    width: min(100% - 24px, 1280px);
+    padding-top: 110px;
     padding-bottom: 72px;
   }
 
+  .classic-home-v2-nav-wrap {
+    padding: 12px 12px 0;
+  }
+
   .classic-home-v2-nav {
-    padding: 10px 12px;
+    width: min(100%, 460px);
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: stretch;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    position: relative;
+  }
+
+  .classic-home-v2-brand {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
     gap: 10px;
   }
 
   .classic-home-v2-brand span {
-    max-width: 120px;
+    max-width: calc(100vw - 120px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .classic-home-v2-login-btn {
-    min-width: 78px;
+  .classic-home-v2-nav-action {
+    width: auto;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .classic-home-v2-nav-action > div {
+    flex: 0 1 auto;
+    gap: 4px;
+  }
+
+  .classic-home-v2-nav-action .semi-button {
+    min-width: 32px;
+    height: 32px !important;
+    padding: 0 7px !important;
+  }
+
+  .classic-home-v2-nav-action .semi-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .classic-home-v2-menu-btn {
+    flex-shrink: 0;
+  }
+
+  .classic-home-v2-mobile-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 1;
+    width: auto;
+    display: grid;
+    gap: 4px;
+    padding: 20px 20px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    background:
+      radial-gradient(
+        circle at 50% -10%,
+        rgba(74, 167, 255, 0.16),
+        transparent 58%
+      ),
+      rgba(15, 20, 23, 0.96);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(18px);
+  }
+
+  .classic-home-v2-mobile-menu a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 4px;
+    color: rgba(244, 244, 245, 0.84);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .classic-home-v2-mobile-menu a:hover,
+  .classic-home-v2-mobile-menu a:focus {
+    color: #fff;
   }
 
   .classic-home-v2-hero {
-    padding-top: 70px;
+    padding-top: 34px;
+    padding-bottom: 40px;
+  }
+
+  .classic-home-v2-hero-copy {
+    padding-top: 0;
+  }
+
+  .classic-home-v2-hero-copy h1 {
+    margin-top: 18px;
+    gap: 8px;
+    font-size: clamp(2.55rem, 14vw, 4.2rem);
+    line-height: 1.02;
+  }
+
+  .classic-home-v2-pill,
+  .classic-home-v2-section-badge,
+  .classic-home-v2-plan-badge,
+  .classic-home-v2-enterprise-badge {
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 0.84rem;
   }
 
   .classic-home-v2-hero-copy p {
     font-size: 0.98rem;
+    line-height: 1.75;
+    margin-top: 20px;
+  }
+
+  .classic-home-v2-actions {
+    margin-top: 26px;
+    gap: 10px;
+  }
+
+  .classic-home-v2-actions > * {
+    flex: 1 1 100%;
+  }
+
+  .classic-home-v2-actions .semi-button {
+    width: 100%;
+  }
+
+  .classic-home-v2-primary-btn,
+  .classic-home-v2-secondary-btn {
+    min-width: 0;
+    height: 50px !important;
+  }
+
+  .classic-home-v2-quick-tags {
+    justify-content: flex-start;
+  }
+
+  .classic-home-v2-quick-tags span {
+    flex: 1 1 calc(50% - 10px);
+    justify-content: center;
+    min-width: 0;
+    text-align: center;
   }
 
   .classic-home-v2-metrics,
@@ -1043,6 +1266,39 @@ body {
   .classic-home-v2-feature-card {
     min-height: unset;
     padding: 24px;
+  }
+
+  .classic-home-v2-section {
+    padding-top: 72px;
+  }
+
+  .classic-home-v2-section-head h2 {
+    font-size: clamp(2.15rem, 11vw, 3.1rem);
+    line-height: 1.08;
+  }
+
+  .classic-home-v2-section-head p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .classic-home-v2-feature-grid,
+  .classic-home-v2-step-grid {
+    margin-top: 28px;
+    gap: 14px;
+  }
+
+  .classic-home-v2-step-card {
+    padding: 24px;
+  }
+
+  .classic-home-v2-feature-visual {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .classic-home-v2-feature-visual span {
+    min-height: 38px;
   }
 
   .classic-home-v2-review-grid {
@@ -1065,6 +1321,61 @@ body {
 
   .classic-home-v2-contact-actions .semi-button {
     width: 100%;
+  }
+
+  .classic-home-v2-footer {
+    margin-top: 42px;
+  }
+
+  .classic-home-v2-footer footer {
+    padding: 24px 18px !important;
+  }
+
+  .classic-home-v2-footer footer > div {
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .classic-home-v2-container {
+    width: min(100% - 20px, 1280px);
+  }
+
+  .classic-home-v2-nav {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .classic-home-v2-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .classic-home-v2-brand {
+    gap: 8px;
+  }
+
+  .classic-home-v2-brand span {
+    max-width: 118px;
+    font-size: 0.94rem;
+  }
+
+  .classic-home-v2-nav-action .semi-button {
+    min-width: 30px;
+    height: 30px !important;
+    padding: 0 6px !important;
+  }
+
+  .classic-home-v2-nav-action .semi-avatar {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+
+  .classic-home-v2-quick-tags span {
+    flex-basis: 100%;
   }
 }
 

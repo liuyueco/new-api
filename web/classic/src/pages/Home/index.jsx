@@ -30,13 +30,21 @@ import {
   BarChart3,
   Code,
   DollarSign,
+  Menu,
   Settings,
   Shield,
+  X,
   Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import NoticeModal from '../../components/layout/NoticeModal';
 import FooterBar from '../../components/layout/Footer';
+import ActionButtons from '../../components/layout/headerbar/ActionButtons';
+import LanguageSelector from '../../components/layout/headerbar/LanguageSelector';
+import ThemeToggle from '../../components/layout/headerbar/ThemeToggle';
+import UserArea from '../../components/layout/headerbar/UserArea';
+import { useHeaderBar } from '../../hooks/common/useHeaderBar';
+import { useNotifications } from '../../hooks/common/useNotifications';
 
 const Home = () => {
   const { t, i18n } = useTranslation();
@@ -45,11 +53,34 @@ const Home = () => {
   const [homePageContentLoaded, setHomePageContentLoaded] = useState(false);
   const [homePageContent, setHomePageContent] = useState('');
   const [noticeVisible, setNoticeVisible] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const isMobile = useIsMobile();
   const isDemoSiteMode = statusState?.status?.demo_site_enabled || false;
   const docsLink = statusState?.status?.docs_link || '';
   const systemName = getSystemName();
   const logo = getLogo();
+  const {
+    userState,
+    currentLang,
+    isLoading,
+    isNewYear,
+    isSelfUseMode,
+    theme,
+    logout,
+    handleLanguageChange,
+    handleThemeToggle,
+    navigate,
+  } = useHeaderBar({
+    onMobileMenuToggle: () => {},
+    drawerOpen: false,
+  });
+  const {
+    noticeVisible: headerNoticeVisible,
+    unreadCount,
+    handleNoticeOpen,
+    handleNoticeClose,
+    getUnreadKeys,
+  } = useNotifications(statusState);
 
   const isAuthenticated = Boolean(localStorage.getItem('user'));
 
@@ -195,12 +226,25 @@ const Home = () => {
     displayHomePageContent().then();
   }, []);
 
+  useEffect(() => {
+    if (!isMobile && mobileNavOpen) {
+      setMobileNavOpen(false);
+    }
+  }, [isMobile, mobileNavOpen]);
+
   return (
     <div className='classic-page-fill classic-home-page w-full overflow-x-hidden'>
       <NoticeModal
         visible={noticeVisible}
         onClose={() => setNoticeVisible(false)}
         isMobile={isMobile}
+      />
+      <NoticeModal
+        visible={headerNoticeVisible}
+        onClose={handleNoticeClose}
+        isMobile={isMobile}
+        defaultTab={unreadCount > 0 ? 'system' : 'inApp'}
+        unreadKeys={getUnreadKeys()}
       />
       {homePageContentLoaded && homePageContent === '' ? (
         <div className='classic-home-v2'>
@@ -221,27 +265,99 @@ const Home = () => {
                 </Link>
 
                 <nav className='classic-home-v2-links'>
+                  <Link to='/'>{t('首页')}</Link>
+                  <Link to={isAuthenticated ? '/console' : '/login'}>
+                    {t('控制台')}
+                  </Link>
+                  <Link to='/pricing'>{t('模型广场')}</Link>
                   {docsLink && (
                     <a href={docsLink} target='_blank' rel='noreferrer'>
                       {t('文档')}
                     </a>
                   )}
-                  <a href='#features'>{t('Core Features')}</a>
-                  <a href='#workflow'>{t('How It Works')}</a>
-                  <a href='#contact'>{t('Get Started')}</a>
                 </nav>
 
                 <div className='classic-home-v2-nav-action'>
-                  <Link to={isAuthenticated ? '/console' : '/login'}>
-                    <Button
-                      theme='solid'
-                      type='primary'
-                      className='classic-home-v2-login-btn'
-                    >
-                      {isAuthenticated ? t('Go to Dashboard') : t('登录')}
-                    </Button>
-                  </Link>
+                  {isMobile ? (
+                    <>
+                      <LanguageSelector
+                        currentLang={currentLang}
+                        onLanguageChange={handleLanguageChange}
+                        t={t}
+                      />
+                      <ThemeToggle
+                        theme={theme}
+                        onThemeToggle={handleThemeToggle}
+                        t={t}
+                      />
+                      <UserArea
+                        userState={userState}
+                        isLoading={isLoading}
+                        isMobile={isMobile}
+                        isSelfUseMode={isSelfUseMode}
+                        logout={logout}
+                        navigate={navigate}
+                        t={t}
+                      />
+                      <Button
+                        theme='borderless'
+                        type='tertiary'
+                        className='classic-home-v2-menu-btn'
+                        icon={
+                          mobileNavOpen ? <X size={20} /> : <Menu size={20} />
+                        }
+                        aria-label={mobileNavOpen ? t('关闭') : t('菜单')}
+                        onClick={() => setMobileNavOpen((open) => !open)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <ActionButtons
+                        isNewYear={isNewYear}
+                        unreadCount={unreadCount}
+                        onNoticeOpen={handleNoticeOpen}
+                        theme={theme}
+                        onThemeToggle={handleThemeToggle}
+                        currentLang={currentLang}
+                        onLanguageChange={handleLanguageChange}
+                        userState={userState}
+                        isLoading={isLoading}
+                        isMobile={isMobile}
+                        isSelfUseMode={isSelfUseMode}
+                        logout={logout}
+                        navigate={navigate}
+                        t={t}
+                      />
+                    </>
+                  )}
                 </div>
+
+                {isMobile && mobileNavOpen && (
+                  <div className='classic-home-v2-mobile-menu'>
+                    <Link to='/' onClick={() => setMobileNavOpen(false)}>
+                      {t('首页')}
+                    </Link>
+                    <Link
+                      to={isAuthenticated ? '/console' : '/login'}
+                      onClick={() => setMobileNavOpen(false)}
+                    >
+                      {t('控制台')}
+                    </Link>
+                    <Link to='/pricing' onClick={() => setMobileNavOpen(false)}>
+                      {t('模型广场')}
+                    </Link>
+                    {docsLink && (
+                      <a
+                        href={docsLink}
+                        target='_blank'
+                        rel='noreferrer'
+                        onClick={() => setMobileNavOpen(false)}
+                      >
+                        {t('文档')}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </header>
 
