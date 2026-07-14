@@ -38,6 +38,7 @@ export interface AuthUser {
   aff_count?: number
   aff_quota?: number
   aff_history_quota?: number
+  agent_level?: number
   inviter_id?: number
   github_id?: string
   google_id?: string

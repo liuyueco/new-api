@@ -30,6 +30,7 @@ import {
   getOAuthProviderIcon,
   setUserData,
   onDiscordOAuthClicked,
+  onGoogleOAuthClicked,
   onCustomOAuthClicked,
 } from '../../helpers';
 import Turnstile from 'react-turnstile';
@@ -63,7 +64,7 @@ import TelegramLoginButton from 'react-telegram-login/src';
 import { UserContext } from '../../context/User';
 import { StatusContext } from '../../context/Status';
 import { useTranslation } from 'react-i18next';
-import { SiDiscord } from 'react-icons/si';
+import { SiDiscord, SiGoogle } from 'react-icons/si';
 
 const RegisterForm = () => {
   let navigate = useNavigate();
@@ -91,6 +92,7 @@ const RegisterForm = () => {
   const [showEmailRegister, setShowEmailRegister] = useState(false);
   const [wechatLoading, setWechatLoading] = useState(false);
   const [githubLoading, setGithubLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [discordLoading, setDiscordLoading] = useState(false);
   const [oidcLoading, setOidcLoading] = useState(false);
   const [linuxdoLoading, setLinuxdoLoading] = useState(false);
@@ -133,12 +135,13 @@ const RegisterForm = () => {
     (status.custom_oauth_providers || []).length > 0;
   const hasOAuthRegisterOptions = Boolean(
     status.github_oauth ||
-      status.discord_oauth ||
-      status.oidc_enabled ||
-      status.wechat_login ||
-      status.linuxdo_oauth ||
-      status.telegram_oauth ||
-      hasCustomOAuthProviders,
+    status.google_oauth ||
+    status.discord_oauth ||
+    status.oidc_enabled ||
+    status.wechat_login ||
+    status.linuxdo_oauth ||
+    status.telegram_oauth ||
+    hasCustomOAuthProviders,
   );
 
   const [showEmailVerification, setShowEmailVerification] = useState(false);
@@ -310,6 +313,15 @@ const RegisterForm = () => {
     }
   };
 
+  const handleGoogleClick = () => {
+    setGoogleLoading(true);
+    try {
+      onGoogleOAuthClicked(status.google_client_id, { shouldLogout: true });
+    } finally {
+      setTimeout(() => setGoogleLoading(false), 3000);
+    }
+  };
+
   const handleOIDCClick = () => {
     setOidcLoading(true);
     try {
@@ -457,6 +469,27 @@ const RegisterForm = () => {
                     loading={discordLoading}
                   >
                     <span className='ml-3'>{t('使用 Discord 继续')}</span>
+                  </Button>
+                )}
+
+                {status.google_oauth && (
+                  <Button
+                    theme='outline'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    type='tertiary'
+                    icon={
+                      <SiGoogle
+                        style={{
+                          color: '#4285F4',
+                          width: '20px',
+                          height: '20px',
+                        }}
+                      />
+                    }
+                    onClick={handleGoogleClick}
+                    loading={googleLoading}
+                  >
+                    <span className='ml-3'>{t('使用 Google 继续')}</span>
                   </Button>
                 )}
 
@@ -781,8 +814,7 @@ const RegisterForm = () => {
         style={{ top: '50%', left: '-120px' }}
       />
       <div className='w-full max-w-sm mt-[60px]'>
-        {showEmailRegister ||
-        !hasOAuthRegisterOptions
+        {showEmailRegister || !hasOAuthRegisterOptions
           ? renderEmailRegisterForm()
           : renderOAuthOptions()}
         {renderWeChatLoginModal()}

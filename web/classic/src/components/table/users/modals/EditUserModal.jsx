@@ -94,6 +94,7 @@ const EditUserModal = (props) => {
     quota_amount: 0,
     group: 'default',
     remark: '',
+    agent_level: 0,
   });
 
   const fetchGroups = async () => {
@@ -365,6 +366,21 @@ const EditUserModal = (props) => {
                           allowAdditions
                           search
                           rules={[{ required: true, message: t('请选择分组') }]}
+                        />
+                      </Col>
+
+                      <Col span={24}>
+                        <Form.Select
+                          field='agent_level'
+                          label={t('代理等级')}
+                          placeholder={t('请选择代理等级')}
+                          optionList={[
+                            { label: t('普通代理'), value: 0 },
+                            { label: t('高级代理'), value: 1 },
+                          ]}
+                          extraText={t(
+                            '普通代理按普通提成比例，高级代理按更高提成比例',
+                          )}
                         />
                       </Col>
 

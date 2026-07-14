@@ -36,6 +36,11 @@ export default function SettingsCreditLimit(props) {
     PreConsumedQuota: '',
     QuotaForInviter: '',
     QuotaForInvitee: '',
+    AffCommissionEnabled: true,
+    AffCommissionRateNormal: '0.01',
+    AffCommissionRateAdvanced: '0.1',
+    AffAdvancedSingleTopUp: '10000',
+    AffAdvancedTotalSpend: '30000',
     'quota_setting.enable_free_model_pre_consume': true,
   });
   const refForm = useRef();
@@ -179,6 +184,85 @@ export default function SettingsCreditLimit(props) {
                     setInputs({
                       ...inputs,
                       QuotaForInvitee: String(value),
+                    })
+                  }
+                />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.Switch
+                  label={t('启用充值抽佣')}
+                  field={'AffCommissionEnabled'}
+                  extraText={t('下级在线充值成功后，邀请人按代理等级获得提成')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      AffCommissionEnabled: value,
+                    })
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('普通代理提成比例')}
+                  field={'AffCommissionRateNormal'}
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  extraText={t('例如 0.01 表示 1%')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      AffCommissionRateNormal: String(value),
+                    })
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('高级代理提成比例')}
+                  field={'AffCommissionRateAdvanced'}
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  extraText={t('例如 0.1 表示 10%')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      AffCommissionRateAdvanced: String(value),
+                    })
+                  }
+                />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('高级代理单笔充值门槛')}
+                  field={'AffAdvancedSingleTopUp'}
+                  step={1}
+                  min={0}
+                  extraText={t('代理本人单笔在线充值达到该金额后自动升级')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      AffAdvancedSingleTopUp: String(value),
+                    })
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('高级代理累计消费门槛')}
+                  field={'AffAdvancedTotalSpend'}
+                  step={1}
+                  min={0}
+                  extraText={t('代理本人累计消费达到该金额后自动升级')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      AffAdvancedTotalSpend: String(value),
                     })
                   }
                 />

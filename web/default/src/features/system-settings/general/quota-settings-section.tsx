@@ -52,6 +52,11 @@ const quotaSchema = z.object({
   PreConsumedQuota: z.coerce.number().min(0),
   QuotaForInviter: z.coerce.number().min(0),
   QuotaForInvitee: z.coerce.number().min(0),
+  AffCommissionEnabled: z.boolean(),
+  AffCommissionRateNormal: z.coerce.number().min(0).max(1),
+  AffCommissionRateAdvanced: z.coerce.number().min(0).max(1),
+  AffAdvancedSingleTopUp: z.coerce.number().min(0),
+  AffAdvancedTotalSpend: z.coerce.number().min(0),
   TopUpLink: z.string(),
   general_setting: z.object({
     docs_link: z.string(),
@@ -212,6 +217,140 @@ export function QuotaSettingsSection({
                   </FormControl>
                   <FormDescription>
                     {t('Quota given to invited users')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <SettingsFormGridItem span='full'>
+              <FormField
+                control={form.control}
+                name='AffCommissionEnabled'
+                render={({ field }) => (
+                  <SettingsSwitchItem>
+                    <SettingsSwitchContent>
+                      <FormLabel>{t('Affiliate Top-up Commission')}</FormLabel>
+                      <FormDescription>
+                        {t(
+                          'When enabled, inviters earn a percentage of invitees’ online top-ups.'
+                        )}
+                      </FormDescription>
+                    </SettingsSwitchContent>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={updateOption.isPending}
+                      />
+                    </FormControl>
+                  </SettingsSwitchItem>
+                )}
+              />
+            </SettingsFormGridItem>
+
+            <FormField
+              control={form.control}
+              name='AffCommissionRateNormal'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Normal Agent Commission Rate')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min={0}
+                      max={1}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t('Default 0.01 means 1% of paid amount')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='AffCommissionRateAdvanced'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Advanced Agent Commission Rate')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min={0}
+                      max={1}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t('Default 0.10 means 10% of paid amount')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='AffAdvancedSingleTopUp'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Advanced Upgrade Single Top-up')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      min={0}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t(
+                      'Promote to advanced agent when a single online top-up reaches this amount'
+                    )}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='AffAdvancedTotalSpend'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Advanced Upgrade Total Spend')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      min={0}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t(
+                      'Promote to advanced agent when cumulative API spend reaches this amount'
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

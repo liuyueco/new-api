@@ -240,6 +240,8 @@ export interface UserWalletData {
   aff_history_quota: number
   /** Number of successful affiliate invites */
   aff_count: number
+  /** Agent level: 0 = normal, 1 = advanced */
+  agent_level?: number
   /** User group */
   group: string
 }

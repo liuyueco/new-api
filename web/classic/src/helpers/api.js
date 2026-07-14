@@ -36,7 +36,6 @@ export let API = axios.create({
   },
 });
 
-
 function redirectToOAuthUrl(url, options = {}) {
   const { openInNewTab = false } = options;
   const targetUrl = typeof url === 'string' ? url : url.toString();
@@ -48,7 +47,6 @@ function redirectToOAuthUrl(url, options = {}) {
 
   window.location.assign(targetUrl);
 }
-
 
 function patchAPIInstance(instance) {
   const originalGet = instance.get.bind(instance);
@@ -302,6 +300,22 @@ export async function onGitHubOAuthClicked(github_client_id, options = {}) {
   redirectToOAuthUrl(
     `https://github.com/login/oauth/authorize?client_id=${github_client_id}&state=${state}&scope=user:email`,
   );
+}
+
+export async function onGoogleOAuthClicked(google_client_id, options = {}) {
+  const state = await prepareOAuthState(options);
+  if (!state) return;
+  const url = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+  url.searchParams.set('client_id', google_client_id);
+  url.searchParams.set(
+    'redirect_uri',
+    `${window.location.origin}/oauth/google`,
+  );
+  url.searchParams.set('response_type', 'code');
+  url.searchParams.set('scope', 'openid profile email');
+  url.searchParams.set('state', state);
+  url.searchParams.set('prompt', 'select_account');
+  redirectToOAuthUrl(url);
 }
 
 export async function onLinuxDOOAuthClicked(

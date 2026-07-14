@@ -39,7 +39,22 @@ const InvitationCard = ({
   affLink,
   handleAffLinkClick,
   complianceConfirmed = true,
+  status = {},
 }) => {
+  const agentLevel = Number(userState?.user?.agent_level || 0);
+  const isAdvanced = agentLevel >= 1;
+  const rateNormal = Number(status?.aff_commission_rate_normal ?? 0.01);
+  const rateAdvanced = Number(status?.aff_commission_rate_advanced ?? 0.1);
+  const currentRate = isAdvanced ? rateAdvanced : rateNormal;
+  const commissionEnabled = status?.aff_commission_enabled !== false;
+  const advancedSingleTopUp = Number(
+    status?.aff_advanced_single_topup ?? 10000,
+  );
+  const advancedTotalSpend = Number(status?.aff_advanced_total_spend ?? 30000);
+  const formatPercent = (rate) => {
+    const pct = rate * 100;
+    return Number.isInteger(pct) ? String(pct) : pct.toFixed(2);
+  };
   return (
     <Card className='!rounded-2xl shadow-sm border-0'>
       {/* 卡片头部 */}
@@ -51,7 +66,14 @@ const InvitationCard = ({
           <Typography.Text className='text-lg font-medium'>
             {t('邀请奖励')}
           </Typography.Text>
-          <div className='text-xs'>{t('邀请好友获得额外奖励')}</div>
+          <div className='text-xs'>
+            {commissionEnabled
+              ? t('当前为{{level}}，下级在线充值可获 {{rate}}% 提成', {
+                  level: isAdvanced ? t('高级代理') : t('普通代理'),
+                  rate: formatPercent(currentRate),
+                })
+              : t('邀请好友获得额外奖励')}
+          </div>
         </div>
       </div>
 
@@ -214,7 +236,7 @@ const InvitationCard = ({
             <div className='flex items-start gap-2'>
               <Badge dot type='success' />
               <Text type='tertiary' className='text-sm'>
-                {t('邀请好友注册，好友充值后您可获得相应奖励')}
+                {t('邀请好友注册，好友在线充值后您可按代理等级获得提成')}
               </Text>
             </div>
 
@@ -228,7 +250,16 @@ const InvitationCard = ({
             <div className='flex items-start gap-2'>
               <Badge dot type='success' />
               <Text type='tertiary' className='text-sm'>
-                {t('邀请的好友越多，获得的奖励越多')}
+                {isAdvanced
+                  ? t('您已是高级代理，享受更高提成比例')
+                  : t(
+                      '单笔充值达到 {{single}} 或累计消费达到 {{total}} 可升级为高级代理（{{rate}}%）',
+                      {
+                        single: advancedSingleTopUp,
+                        total: advancedTotalSpend,
+                        rate: formatPercent(rateAdvanced),
+                      },
+                    )}
               </Text>
             </div>
           </div>

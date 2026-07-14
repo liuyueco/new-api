@@ -36,6 +36,11 @@ const OperationSetting = () => {
     PreConsumedQuota: 0,
     QuotaForInviter: 0,
     QuotaForInvitee: 0,
+    AffCommissionEnabled: true,
+    AffCommissionRateNormal: 0.01,
+    AffCommissionRateAdvanced: 0.1,
+    AffAdvancedSingleTopUp: 10000,
+    AffAdvancedTotalSpend: 30000,
     'quota_setting.enable_free_model_pre_consume': true,
 
     /* 通用设置 */

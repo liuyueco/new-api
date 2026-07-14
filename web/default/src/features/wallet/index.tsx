@@ -322,6 +322,17 @@ export function Wallet(props: WalletProps) {
                 topupInfo?.payment_compliance_confirmed !== false
               }
               loading={affiliateLoading}
+              commissionEnabled={status?.aff_commission_enabled !== false}
+              rateNormal={Number(status?.aff_commission_rate_normal ?? 0.01)}
+              rateAdvanced={Number(
+                status?.aff_commission_rate_advanced ?? 0.1
+              )}
+              advancedSingleTopUp={Number(
+                status?.aff_advanced_single_topup ?? 10000
+              )}
+              advancedTotalSpend={Number(
+                status?.aff_advanced_total_spend ?? 30000
+              )}
             />
           </div>
         </SectionPageLayout.Content>

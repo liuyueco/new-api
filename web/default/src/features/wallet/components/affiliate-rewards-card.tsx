@@ -32,6 +32,11 @@ interface AffiliateRewardsCardProps {
   onTransfer: () => void
   complianceConfirmed?: boolean
   loading?: boolean
+  commissionEnabled?: boolean
+  rateNormal?: number
+  rateAdvanced?: number
+  advancedSingleTopUp?: number
+  advancedTotalSpend?: number
 }
 
 export function AffiliateRewardsCard({
@@ -40,6 +45,11 @@ export function AffiliateRewardsCard({
   onTransfer,
   complianceConfirmed = true,
   loading,
+  commissionEnabled = true,
+  rateNormal = 0.01,
+  rateAdvanced = 0.1,
+  advancedSingleTopUp = 10000,
+  advancedTotalSpend = 30000,
 }: AffiliateRewardsCardProps) {
   const { t } = useTranslation()
   if (loading) {
@@ -58,6 +68,9 @@ export function AffiliateRewardsCard({
   }
 
   const hasRewards = (user?.aff_quota ?? 0) > 0
+  const isAdvanced = (user?.agent_level ?? 0) >= 1
+  const currentRate = isAdvanced ? rateAdvanced : rateNormal
+  const agentLabel = isAdvanced ? t('Advanced Agent') : t('Normal Agent')
 
   return (
     <Card className='bg-muted/20 py-0'>
@@ -70,11 +83,35 @@ export function AffiliateRewardsCard({
             <h3 className='truncate text-sm font-semibold'>
               {t('Referral Program')}
             </h3>
-            <p className='text-muted-foreground line-clamp-1 text-xs'>
-              {t(
-                'Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.'
-              )}
+            <p className='text-muted-foreground line-clamp-2 text-xs'>
+              {commissionEnabled
+                ? t(
+                    'Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.',
+                    {
+                      rate: (currentRate * 100).toFixed(
+                        currentRate * 100 % 1 === 0 ? 0 : 2
+                      ),
+                      level: agentLabel,
+                    }
+                  )
+                : t(
+                    'Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.'
+                  )}
             </p>
+            {commissionEnabled && !isAdvanced ? (
+              <p className='text-muted-foreground mt-1 line-clamp-2 text-[11px]'>
+                {t(
+                  'Upgrade to advanced agent ({{advancedRate}}%) via a single top-up of {{single}} or cumulative spend of {{total}}.',
+                  {
+                    advancedRate: (rateAdvanced * 100).toFixed(
+                      rateAdvanced * 100 % 1 === 0 ? 0 : 2
+                    ),
+                    single: advancedSingleTopUp,
+                    total: advancedTotalSpend,
+                  }
+                )}
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -120,13 +157,13 @@ export function AffiliateRewardsCard({
             </Button>
           )}
         </div>
-        {!complianceConfirmed ? (
-          <p className='text-muted-foreground text-xs lg:col-span-3'>
+        {!complianceConfirmed && hasRewards && (
+          <p className='text-destructive col-span-full text-xs'>
             {t(
-              'Referral reward transfer is disabled until the administrator confirms compliance terms.'
+              'Reward transfers are disabled until an admin confirms the payment compliance statement.'
             )}
           </p>
-        ) : null}
+        )}
       </CardContent>
     </Card>
   )

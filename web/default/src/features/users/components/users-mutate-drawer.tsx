@@ -358,6 +358,50 @@ export function UsersMutateDrawer({
 
                   <FormField
                     control={form.control}
+                    name='agent_level'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('Agent Level')}</FormLabel>
+                        <Select
+                          items={[
+                            { value: '0', label: t('Normal Agent') },
+                            { value: '1', label: t('Advanced Agent') },
+                          ]}
+                          onValueChange={(value) =>
+                            value !== null && field.onChange(parseInt(value))
+                          }
+                          value={String(field.value ?? 0)}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={t('Select agent level')}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent alignItemWithTrigger={false}>
+                            <SelectGroup>
+                              <SelectItem value='0'>
+                                {t('Normal Agent')}
+                              </SelectItem>
+                              <SelectItem value='1'>
+                                {t('Advanced Agent')}
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <FormDescription>
+                          {t(
+                            'Normal agents earn the normal commission rate; advanced agents earn the higher rate.'
+                          )}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
                     name='quota_dollars'
                     render={({ field }) => (
                       <FormItem>

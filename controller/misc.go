@@ -122,6 +122,11 @@ func GetStatus(c *gin.Context) {
 		"user_agreement_enabled":      legalSetting.UserAgreement != "",
 		"privacy_policy_enabled":      legalSetting.PrivacyPolicy != "",
 		"checkin_enabled":             operation_setting.GetCheckinSetting().Enabled,
+		"aff_commission_enabled":      common.AffCommissionEnabled,
+		"aff_commission_rate_normal":  common.AffCommissionRateNormal,
+		"aff_commission_rate_advanced": common.AffCommissionRateAdvanced,
+		"aff_advanced_single_topup":   common.AffAdvancedSingleTopUp,
+		"aff_advanced_total_spend":    common.AffAdvancedTotalSpend,
 	}
 
 	// 根据启用状态注入可选内容

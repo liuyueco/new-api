@@ -47,6 +47,7 @@ type User struct {
 	AffQuota         int            `json:"aff_quota" gorm:"type:int;default:0;column:aff_quota"`           // 邀请剩余额度
 	AffHistoryQuota  int            `json:"aff_history_quota" gorm:"type:int;default:0;column:aff_history"` // 邀请历史额度
 	InviterId        int            `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
+	AgentLevel       int            `json:"agent_level" gorm:"type:int;default:0;column:agent_level"` // 0=普通代理 1=高级代理
 	DeletedAt        gorm.DeletedAt `gorm:"index"`
 	LinuxDOId        string         `json:"linux_do_id" gorm:"column:linux_do_id;index"`
 	Setting          string         `json:"setting" gorm:"type:text;column:setting"`
@@ -525,6 +526,7 @@ func (user *User) Edit(updatePassword bool) error {
 		"display_name": newUser.DisplayName,
 		"group":        newUser.Group,
 		"remark":       newUser.Remark,
+		"agent_level":  newUser.AgentLevel,
 	}
 	if updatePassword {
 		updates["password"] = newUser.Password
@@ -998,6 +1000,7 @@ func updateUserUsedQuotaAndRequestCount(id int, quota int, count int) {
 		common.SysLog("failed to update user used quota and request count: " + err.Error())
 		return
 	}
+	TryPromoteAgentBySpend(id)
 
 	//// 更新缓存
 	//if err := invalidateUserCache(id); err != nil {
@@ -1019,6 +1022,10 @@ func updateUserQuotaUsedQuotaAndRequestCount(id int, quota int, usedQuota int, r
 	).Error
 	if err != nil {
 		common.SysLog("failed to batch update user quota, used quota and request count: " + err.Error())
+		return
+	}
+	if usedQuota > 0 {
+		TryPromoteAgentBySpend(id)
 	}
 }
 

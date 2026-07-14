@@ -1025,6 +1025,7 @@ const TopUp = () => {
           affLink={affLink}
           handleAffLinkClick={handleAffLinkClick}
           complianceConfirmed={topupInfo.payment_compliance_confirmed !== false}
+          status={statusState.status}
         />
       </div>
     </div>

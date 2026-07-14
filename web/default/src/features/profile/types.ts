@@ -63,6 +63,8 @@ export interface UserProfile {
   aff_quota: number
   /** Total affiliate quota earned (historical) */
   aff_history_quota: number
+  /** Agent level: 0 = normal, 1 = advanced */
+  agent_level?: number
   /** Invite user ID */
   invite_user_id?: number
   /** Account creation timestamp */

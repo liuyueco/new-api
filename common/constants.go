@@ -144,6 +144,19 @@ var TelegramBotName = ""
 var QuotaForNewUser = 0
 var QuotaForInviter = 0
 var QuotaForInvitee = 0
+
+// Affiliate commission (online top-up only)
+var AffCommissionEnabled = true
+var AffCommissionRateNormal = 0.01   // ordinary agent commission rate
+var AffCommissionRateAdvanced = 0.10 // advanced agent commission rate
+var AffAdvancedSingleTopUp = 10000.0 // money amount to auto-promote (single top-up)
+var AffAdvancedTotalSpend = 30000.0  // money amount to auto-promote (cumulative spend)
+
+const (
+	AgentLevelNormal   = 0
+	AgentLevelAdvanced = 1
+)
+
 var ChannelDisableThreshold = 5.0
 var AutomaticDisableChannelEnabled = false
 var AutomaticEnableChannelEnabled = false

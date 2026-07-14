@@ -30,6 +30,7 @@ export const userFormSchema = z.object({
   display_name: z.string().optional(),
   password: z.string().optional(),
   role: z.number().optional(),
+  agent_level: z.number().optional(),
   quota_dollars: z.number().min(0).optional(),
   group: z.string().optional(),
   remark: z.string().optional(),
@@ -46,6 +47,7 @@ export const USER_FORM_DEFAULT_VALUES: UserFormValues = {
   display_name: '',
   password: '',
   role: 1, // Default to common user
+  agent_level: 0,
   quota_dollars: 0,
   group: DEFAULT_GROUP,
   remark: '',
@@ -75,6 +77,7 @@ export function transformFormDataToPayload(
     // For update: quota is adjusted atomically via /api/user/manage, not sent here
     payload.group = data.group
     payload.remark = data.remark || undefined
+    payload.agent_level = data.agent_level ?? 0
     payload.id = userId
   }
 
@@ -90,6 +93,7 @@ export function transformUserToFormDefaults(user: User): UserFormValues {
     display_name: user.display_name,
     password: '',
     role: user.role,
+    agent_level: user.agent_level ?? 0,
     quota_dollars: quotaUnitsToDollars(user.quota),
     group: user.group || DEFAULT_GROUP,
     remark: user.remark || '',
