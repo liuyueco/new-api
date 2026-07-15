@@ -330,15 +330,50 @@ func HardDeleteUserById(id int) error {
 	return err
 }
 
-func inviteUser(inviterId int) (err error) {
-	user, err := GetUserById(inviterId, true)
-	if err != nil {
+// incrementAffCount bumps the inviter's successful invite counter.
+func incrementAffCount(inviterId int) error {
+	if inviterId <= 0 {
+		return nil
+	}
+	return DB.Model(&User{}).Where("id = ?", inviterId).
+		UpdateColumn("aff_count", gorm.Expr("aff_count + ?", 1)).Error
+}
+
+// grantInviterReward credits the one-time register reward to the inviter's affiliate quota.
+func grantInviterReward(inviterId int) error {
+	if inviterId <= 0 || common.QuotaForInviter <= 0 {
+		return nil
+	}
+	return DB.Model(&User{}).Where("id = ?", inviterId).Updates(map[string]interface{}{
+		"aff_quota":         gorm.Expr("aff_quota + ?", common.QuotaForInviter),
+		"aff_history_quota": gorm.Expr("aff_history_quota + ?", common.QuotaForInviter),
+	}).Error
+}
+
+// SyncAffCountsFromInvites rebuilds aff_count from users.inviter_id (fixes historical undercount).
+func SyncAffCountsFromInvites() error {
+	type inviteAgg struct {
+		InviterId int   `gorm:"column:inviter_id"`
+		Count     int64 `gorm:"column:cnt"`
+	}
+	var aggs []inviteAgg
+	if err := DB.Model(&User{}).
+		Select("inviter_id, count(*) as cnt").
+		Where("inviter_id > 0").
+		Group("inviter_id").
+		Scan(&aggs).Error; err != nil {
 		return err
 	}
-	user.AffCount++
-	user.AffQuota += common.QuotaForInviter
-	user.AffHistoryQuota += common.QuotaForInviter
-	return DB.Save(user).Error
+	if err := DB.Model(&User{}).Where("1 = 1").UpdateColumn("aff_count", 0).Error; err != nil {
+		return err
+	}
+	for _, agg := range aggs {
+		if err := DB.Model(&User{}).Where("id = ?", agg.InviterId).
+			UpdateColumn("aff_count", agg.Count).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (user *User) TransferAffQuotaToQuota(quota int) error {
@@ -389,6 +424,9 @@ func (user *User) Insert(inviterId int) error {
 	user.Quota = common.QuotaForNewUser
 	//user.SetAccessToken(common.GetUUID())
 	user.AffCode = common.GetRandomString(4)
+	if inviterId != 0 {
+		user.InviterId = inviterId
+	}
 
 	// 初始化用户设置，包括默认的边栏配置
 	if user.Setting == "" {
@@ -420,15 +458,18 @@ func (user *User) Insert(inviterId int) error {
 	if common.QuotaForNewUser > 0 {
 		RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("新用户注册赠送 %s", logger.LogQuota(common.QuotaForNewUser)))
 	}
-	if inviterId != 0 && operation_setting.IsPaymentComplianceConfirmed() {
-		if common.QuotaForInvitee > 0 {
-			_ = IncreaseUserQuota(user.Id, common.QuotaForInvitee, true)
-			RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("使用邀请码赠送 %s", logger.LogQuota(common.QuotaForInvitee)))
-		}
-		if common.QuotaForInviter > 0 {
-			//_ = IncreaseUserQuota(inviterId, common.QuotaForInviter)
-			RecordLog(inviterId, LogTypeSystem, fmt.Sprintf("邀请用户赠送 %s", logger.LogQuota(common.QuotaForInviter)))
-			_ = inviteUser(inviterId)
+	if inviterId != 0 {
+		// Invite count is independent of one-time reward quota settings.
+		_ = incrementAffCount(inviterId)
+		if operation_setting.IsPaymentComplianceConfirmed() {
+			if common.QuotaForInvitee > 0 {
+				_ = IncreaseUserQuota(user.Id, common.QuotaForInvitee, true)
+				RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("使用邀请码赠送 %s", logger.LogQuota(common.QuotaForInvitee)))
+			}
+			if common.QuotaForInviter > 0 {
+				RecordLog(inviterId, LogTypeSystem, fmt.Sprintf("邀请用户赠送 %s", logger.LogQuota(common.QuotaForInviter)))
+				_ = grantInviterReward(inviterId)
+			}
 		}
 	}
 	return nil
@@ -447,6 +488,9 @@ func (user *User) InsertWithTx(tx *gorm.DB, inviterId int) error {
 	}
 	user.Quota = common.QuotaForNewUser
 	user.AffCode = common.GetRandomString(4)
+	if inviterId != 0 {
+		user.InviterId = inviterId
+	}
 
 	// 初始化用户设置
 	if user.Setting == "" {
@@ -481,14 +525,17 @@ func (user *User) FinalizeOAuthUserCreation(inviterId int) {
 	if common.QuotaForNewUser > 0 {
 		RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("新用户注册赠送 %s", logger.LogQuota(common.QuotaForNewUser)))
 	}
-	if inviterId != 0 && operation_setting.IsPaymentComplianceConfirmed() {
-		if common.QuotaForInvitee > 0 {
-			_ = IncreaseUserQuota(user.Id, common.QuotaForInvitee, true)
-			RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("使用邀请码赠送 %s", logger.LogQuota(common.QuotaForInvitee)))
-		}
-		if common.QuotaForInviter > 0 {
-			RecordLog(inviterId, LogTypeSystem, fmt.Sprintf("邀请用户赠送 %s", logger.LogQuota(common.QuotaForInviter)))
-			_ = inviteUser(inviterId)
+	if inviterId != 0 {
+		_ = incrementAffCount(inviterId)
+		if operation_setting.IsPaymentComplianceConfirmed() {
+			if common.QuotaForInvitee > 0 {
+				_ = IncreaseUserQuota(user.Id, common.QuotaForInvitee, true)
+				RecordLog(user.Id, LogTypeSystem, fmt.Sprintf("使用邀请码赠送 %s", logger.LogQuota(common.QuotaForInvitee)))
+			}
+			if common.QuotaForInviter > 0 {
+				RecordLog(inviterId, LogTypeSystem, fmt.Sprintf("邀请用户赠送 %s", logger.LogQuota(common.QuotaForInviter)))
+				_ = grantInviterReward(inviterId)
+			}
 		}
 	}
 }

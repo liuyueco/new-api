@@ -286,6 +286,9 @@ func migrateDB() error {
 	if err != nil {
 		return err
 	}
+	if err := SyncAffCountsFromInvites(); err != nil {
+		common.SysLog(fmt.Sprintf("sync aff_count from inviter_id failed: %v", err))
+	}
 	if common.UsingSQLite {
 		if err := ensureSubscriptionPlanTableSQLite(); err != nil {
 			return err

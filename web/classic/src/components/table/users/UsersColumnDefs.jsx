@@ -192,8 +192,8 @@ const renderInviteInfo = (text, record, t) => {
         </Tag>
         <Tag color='white' shape='circle' className='!text-xs'>
           {record.inviter_id === 0
-            ? t('无邀请人')
-            : `${t('邀请人')}: ${record.inviter_id}`}
+            ? t('无邀请人ID')
+            : `${t('邀请人ID')}: ${record.inviter_id}`}
         </Tag>
       </Space>
     </div>

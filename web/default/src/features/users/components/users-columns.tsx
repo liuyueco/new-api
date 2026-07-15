@@ -314,7 +314,7 @@ export function useUsersColumns(): ColumnDef<User>[] {
                 <TooltipTrigger
                   render={
                     <StatusBadge
-                      label={`${t('Inviter')}: ${inviterId}`}
+                      label={`${t('Inviter ID')}: ${inviterId}`}
                       variant='neutral'
                       copyable={false}
                       className='cursor-help'
@@ -330,7 +330,7 @@ export function useUsersColumns(): ColumnDef<User>[] {
             )}
             {inviterId === 0 && (
               <StatusBadge
-                label={t('No Inviter')}
+                label={t('No Inviter ID')}
                 variant='neutral'
                 copyable={false}
               />
