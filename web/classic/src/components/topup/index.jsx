@@ -1016,6 +1016,15 @@ const TopUp = () => {
           allSubscriptions={allSubscriptions}
           reloadSubscriptionSelf={getSubscriptionSelf}
           enableRedemption={topupInfo.enable_redemption !== false}
+          topupBonusRate={(() => {
+            const status = statusState?.status;
+            if (status?.topup_bonus_enabled === false) return 0;
+            const isAdvanced = (userState?.user?.agent_level ?? 0) >= 1;
+            const rate = isAdvanced
+              ? Number(status?.topup_bonus_rate_advanced ?? 0.15)
+              : Number(status?.topup_bonus_rate_normal ?? 0.01);
+            return Number.isFinite(rate) && rate > 0 ? rate : 0;
+          })()}
         />
         <InvitationCard
           t={t}

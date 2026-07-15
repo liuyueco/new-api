@@ -66,6 +66,9 @@ const BILLING_SECTIONS = [
           AffCommissionRateAdvanced: settings.AffCommissionRateAdvanced ?? 0.1,
           AffAdvancedSingleTopUp: settings.AffAdvancedSingleTopUp ?? 10000,
           AffAdvancedTotalSpend: settings.AffAdvancedTotalSpend ?? 30000,
+          TopUpBonusEnabled: settings.TopUpBonusEnabled ?? true,
+          TopUpBonusRateNormal: settings.TopUpBonusRateNormal ?? 0.01,
+          TopUpBonusRateAdvanced: settings.TopUpBonusRateAdvanced ?? 0.15,
           TopUpLink: settings.TopUpLink,
           general_setting: {
             docs_link: settings['general_setting.docs_link'],

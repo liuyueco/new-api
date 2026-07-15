@@ -1693,6 +1693,7 @@
     "当前 API 密钥已过期，请在设置中更新。": "Current API key has expired, please update it in settings.",
     "当前 Ollama 版本为 ${version}": "Current Ollama version is ${version}",
     "当前为{{level}}，下级在线充值可获 {{rate}}% 提成": "You are a {{level}}; earn {{rate}}% when invitees top up online",
+    "当前为{{level}}，下级在线充值可获 {{rate}}% 提成，自动计入钱包仅可消耗算力": "You are a {{level}}; earn {{rate}}% on invitee online top-ups, credited to wallet for usage only",
     "当前仅 OpenAI / Claude 语义支持缓存 token 统计，其他通道将隐藏 token 相关字段。": "Currently only OpenAI / Claude semantics support cached token statistics. Other channels will hide token-related fields.",
     "当前仅支持易支付接口，回调地址请在通用设置中配置。": "Currently only the Epay interface is supported. Configure the callback address in General Settings.",
     "当前余额": "Current balance",
@@ -3827,6 +3828,7 @@
     "邀请奖励划转已禁用，管理员需先确认合规声明。": "Invitation reward transfer is disabled until compliance terms are confirmed.",
     "邀请好友注册，好友充值后您可获得相应奖励": "Invite friends to register, and you can get the corresponding reward after the friend recharges",
     "邀请好友注册，好友在线充值后您可按代理等级获得提成": "Invite friends to register; earn commission by agent level after their online top-ups",
+    "邀请好友注册，好友在线充值后提成自动计入钱包，仅可用于消耗算力": "Invite friends; commission after their online top-ups is credited to your wallet for usage only",
     "邀请好友获得额外奖励": "Invite friends to get additional rewards",
     "邀请新用户奖励额度": "Referral bonus quota",
     "邀请的好友越多，获得的奖励越多": "The more friends you invite, the more rewards you will get",
@@ -4096,6 +4098,15 @@
     "默认折叠侧边栏": "Default collapse sidebar",
     "默认测试模型": "Default Test Model",
     "默认用户消息": "Default User Message",
-    "默认补全倍率": "Default completion ratio"
+    "默认补全倍率": "Default completion ratio",
+    "充值赠送": "Top-up Bonus",
+    "开启后，用户在线充值成功可按比例获得额外可用额度": "When enabled, users receive a percentage bonus of their online top-up as usable quota",
+    "普通用户充值赠送比例": "Normal User Top-up Bonus Rate",
+    "默认 0.01 表示赠送实付金额的 1%": "Default 0.01 means +1% of paid amount",
+    "高级代理充值赠送比例": "Advanced Agent Top-up Bonus Rate",
+    "默认 0.15 表示赠送实付金额的 15%": "Default 0.15 means +15% of paid amount",
+    "赠送": "Bonus",
+    "支付 {{pay}}, 额外 {{bonus}} 余额": "Pay {{pay}}, extra {{bonus}} balance",
+    "额外赠送 {{amount}}": "Extra gift {{amount}}"
   }
 }

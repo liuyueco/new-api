@@ -7,6 +7,7 @@ import (
 
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/logger"
+	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
 )
@@ -19,8 +20,9 @@ type AffCommissionRecord struct {
 	InviterId   int     `json:"inviter_id" gorm:"index;not null"`
 	AgentLevel  int     `json:"agent_level" gorm:"type:int;default:0"`
 	Rate        float64 `json:"rate" gorm:"type:decimal(10,6);default:0"`
-	Money       float64 `json:"money" gorm:"type:decimal(10,6);default:0"`
-	Commission  int     `json:"commission" gorm:"type:int;default:0"` // quota units
+	// decimal(20,6): integer part must fit large CNY/USD top-ups (decimal(10,6) max is 9999.999999).
+	Money       float64 `json:"money" gorm:"type:decimal(20,6);default:0"`
+	Commission  int64   `json:"commission" gorm:"type:bigint;default:0"` // quota units
 	CreatedAt   int64   `json:"created_at" gorm:"bigint"`
 }
 
@@ -65,7 +67,7 @@ func GrantAffCommissionOnTopUp(payerUserId int, money float64, tradeNo string) {
 		return
 	}
 
-	commission := int(math.Round(decimal.NewFromFloat(money).Mul(decimal.NewFromFloat(rate)).Mul(decimal.NewFromFloat(common.QuotaPerUnit)).InexactFloat64()))
+	commission := int64(math.Round(decimal.NewFromFloat(money).Mul(decimal.NewFromFloat(rate)).Mul(decimal.NewFromFloat(common.QuotaPerUnit)).InexactFloat64()))
 	if commission < 1 {
 		common.SysLog(fmt.Sprintf("aff commission: skip tiny amount trade_no=%s money=%.4f rate=%.4f", tradeNo, money, rate))
 		return
@@ -87,7 +89,8 @@ func GrantAffCommissionOnTopUp(payerUserId int, money float64, tradeNo string) {
 		}
 
 		result := tx.Model(&User{}).Where("id = ?", inviter.Id).Updates(map[string]interface{}{
-			"aff_quota":   gorm.Expr("aff_quota + ?", commission),
+			// Commission goes directly into usable wallet quota (API spend only; not cash withdrawal).
+			"quota":       gorm.Expr("quota + ?", commission),
 			"aff_history": gorm.Expr("aff_history + ?", commission),
 		})
 		if result.Error != nil {
@@ -106,9 +109,15 @@ func GrantAffCommissionOnTopUp(payerUserId int, money float64, tradeNo string) {
 		return
 	}
 
+	gopool.Go(func() {
+		if cacheErr := cacheIncrUserQuota(inviter.Id, int64(commission)); cacheErr != nil {
+			common.SysLog("failed to increase inviter quota cache after commission: " + cacheErr.Error())
+		}
+	})
+
 	RecordLog(inviter.Id, LogTypeSystem, fmt.Sprintf(
-		"下级在线充值抽佣 %s（订单 %s，实付 %.2f，比例 %.2f%%，等级 %s）",
-		logger.LogQuota(commission),
+		"下级在线充值抽佣到账 %s（订单 %s，实付 %.2f，比例 %.2f%%，等级 %s），已计入钱包额度，仅可用于本站消耗",
+		logger.LogQuota(int(commission)),
 		tradeNo,
 		money,
 		rate*100,
@@ -179,11 +188,14 @@ func promoteAgentToAdvanced(userId int, reason string) {
 }
 
 // HandleTopUpSideEffects runs after a successful online top-up:
-// grant invitee commission to inviter, and try to promote the payer.
+// grant payer top-up bonus at the pre-promotion agent level,
+// grant invitee commission to inviter, then try to promote the payer.
+// Promotion happens after bonus so the first qualifying 10k top-up still gets the normal (1%) rate.
 func HandleTopUpSideEffects(payerUserId int, money float64, tradeNo string) {
 	if payerUserId <= 0 {
 		return
 	}
+	GrantTopUpBonusOnTopUp(payerUserId, money, tradeNo)
 	GrantAffCommissionOnTopUp(payerUserId, money, tradeNo)
 	TryPromoteAgentByTopUp(payerUserId, money)
 }

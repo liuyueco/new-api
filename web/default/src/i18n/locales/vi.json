@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "Mỗi tầng hỗ trợ tối đa 2 điều kiện; tầng cuối cùng là tầng dự phòng không có điều kiện. Hãy dùng độ dài đầu vào đầy đủ cho điều kiện tầng để tránh chọn sai tầng khi cache hit làm giảm token đầu vào tính phí.",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "Mỗi tầng hỗ trợ tối đa 2 điều kiện. Tầng cuối cùng không có điều kiện là tầng dự phòng.",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "Nhận {{rate}}% khi người được mời nạp tiền trực tuyến. Hiện tại bạn là {{level}}.",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "Nhận {{rate}}% khi người được mời nạp tiền trực tuyến; hoa hồng vào ví chỉ để sử dụng. Hiện tại bạn là {{level}}.",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "Nhận phần thưởng khi người bạn giới thiệu nạp tiền",
     "Edit": "Chỉnh sửa",
     "Edit {{title}}": "Chỉnh sửa {{title}}",
@@ -4565,6 +4566,19 @@
     "Zero retention": "Không lưu dữ liệu",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Advanced Agent Top-up Bonus Rate": "Tỷ lệ thưởng nạp tiền đại lý nâng cao",
+    "Default 0.01 means +1% of paid amount": "Mặc định 0.01 nghĩa là +1% số tiền đã thanh toán",
+    "Default 0.15 means +15% of paid amount": "Mặc định 0.15 nghĩa là +15% số tiền đã thanh toán",
+    "Normal User Top-up Bonus Rate": "Tỷ lệ thưởng nạp tiền người dùng thường",
+    "Top-up Bonus": "Thưởng nạp tiền",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "Khi bật, người dùng nhận thêm một phần trăm số tiền nạp online dưới dạng hạn mức sử dụng được.",
+    "Bonus +{{amount}}": "Thưởng +{{amount}}",
+    "Bonus:": "Thưởng:",
+    "Pay {{amount}}": "Thanh toán {{amount}}",
+    "Save {{amount}}": "Tiết kiệm {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "Thanh toán {{pay}}, thêm {{bonus}} số dư",
+    "Extra gift {{amount}}": "Tặng thêm {{amount}}",
+    "Extra gift": "Tặng thêm"
   }
 }

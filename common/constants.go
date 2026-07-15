@@ -152,6 +152,11 @@ var AffCommissionRateAdvanced = 0.10 // advanced agent commission rate
 var AffAdvancedSingleTopUp = 10000.0 // money amount to auto-promote (single top-up)
 var AffAdvancedTotalSpend = 30000.0  // money amount to auto-promote (cumulative spend)
 
+// Top-up bonus: extra quota credited to the payer after a successful online top-up
+var TopUpBonusEnabled = true
+var TopUpBonusRateNormal = 0.01   // non-advanced users: +1% of paid amount
+var TopUpBonusRateAdvanced = 0.15 // advanced agents: +15% of paid amount
+
 const (
 	AgentLevelNormal   = 0
 	AgentLevelAdvanced = 1

@@ -62,11 +62,26 @@ const TransferModal = ({
             {t('划转额度')} · {t('最低') + renderQuota(getQuotaPerUnit())}
           </Typography.Text>
           <InputNumber
-            min={getQuotaPerUnit()}
-            max={userState?.user?.aff_quota || 0}
-            value={transferAmount}
-            onChange={(value) => setTransferAmount(value)}
+            min={1}
+            max={Math.max(
+              1,
+              Math.floor((userState?.user?.aff_quota || 0) / getQuotaPerUnit()),
+            )}
+            step={1}
+            value={
+              getQuotaPerUnit() > 0
+                ? Math.round(
+                    ((transferAmount || 0) / getQuotaPerUnit()) * 100,
+                  ) / 100
+                : 0
+            }
+            onChange={(value) =>
+              setTransferAmount(
+                Math.round(Number(value || 0) * getQuotaPerUnit()),
+              )
+            }
             className='w-full !rounded-lg'
+            formatter={(value) => `${value}`}
           />
         </div>
       </div>

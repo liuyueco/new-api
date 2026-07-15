@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { DEFAULT_DISCOUNT_RATE } from '../../constants'
-import { formatCurrency, getPaymentIcon } from '../../lib'
+import { formatCurrency, getPaymentIcon, calculateTopUpBonus } from '../../lib'
 import type { PaymentMethod } from '../../types'
 
 interface PaymentConfirmDialogProps {
@@ -45,6 +45,7 @@ interface PaymentConfirmDialogProps {
   processing: boolean
   discountRate?: number
   usdExchangeRate?: number
+  topupBonusRate?: number
 }
 
 export function PaymentConfirmDialog({
@@ -58,11 +59,16 @@ export function PaymentConfirmDialog({
   processing,
   discountRate = DEFAULT_DISCOUNT_RATE,
   usdExchangeRate = 1,
+  topupBonusRate = 0,
 }: PaymentConfirmDialogProps) {
   const { t } = useTranslation()
   const hasDiscount = discountRate > 0 && discountRate < 1 && paymentAmount > 0
   const originalAmount = hasDiscount ? paymentAmount / discountRate : 0
   const discountAmount = hasDiscount ? originalAmount - paymentAmount : 0
+  const bonusAmount = calculateTopUpBonus(
+    topupAmount * usdExchangeRate,
+    topupBonusRate
+  )
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -118,6 +124,22 @@ export function PaymentConfirmDialog({
                   {formatCurrency(discountAmount)}
                 </span>
               </div>
+            </div>
+          )}
+
+          {bonusAmount > 0 && (
+            <div className='flex items-center justify-between'>
+              <span className='text-muted-foreground text-sm'>
+                {t('Top-up Bonus')}
+              </span>
+              <span className='text-lg font-semibold text-green-600'>
+                +
+                {formatLocalCurrencyAmount(bonusAmount, {
+                  digitsLarge: 2,
+                  digitsSmall: 2,
+                  abbreviate: false,
+                })}
+              </span>
             </div>
           )}
 

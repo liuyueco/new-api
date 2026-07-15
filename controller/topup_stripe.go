@@ -53,7 +53,7 @@ func (*StripeAdaptor) RequestAmount(c *gin.Context, req *StripePayRequest) {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "获取用户分组失败"})
 		return
 	}
-	payMoney := getStripePayMoney(float64(req.Amount), group)
+	payMoney := calculateStripePaymentUSD(float64(req.Amount), group)
 	if payMoney <= 0.01 {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "充值金额过低"})
 		return
@@ -70,10 +70,10 @@ func (*StripeAdaptor) RequestPay(c *gin.Context, req *StripePayRequest) {
 		c.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("充值数量不能小于 %d", getStripeMinTopup()), "data": 10})
 		return
 	}
-	if req.Amount > 10000 {
-		c.JSON(http.StatusOK, gin.H{"message": "充值数量不能大于 10000", "data": 10})
-		return
-	}
+	// if req.Amount > 10000 { // 临时注释，额度单位不能与美元金额混淆
+	// 	c.JSON(http.StatusOK, gin.H{"message": "充值数量不能大于 10000", "data": 10})
+	// 	return
+	// }
 
 	if req.SuccessURL != "" && common.ValidateRedirectURL(req.SuccessURL) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "支付成功重定向URL不在可信任域名列表中", "data": ""})
@@ -87,7 +87,7 @@ func (*StripeAdaptor) RequestPay(c *gin.Context, req *StripePayRequest) {
 
 	id := c.GetInt("id")
 	user, _ := model.GetUserById(id, false)
-	chargedMoney := GetChargedAmount(float64(req.Amount), *user)
+	// chargedMoney := GetChargedAmount(float64(req.Amount), *user) // Old line
 
 	reference := fmt.Sprintf("new-api-ref-%d-%d-%s", user.Id, time.Now().UnixMilli(), randstr.String(4))
 	referenceId := "ref_" + common.Sha1([]byte(reference))
@@ -102,7 +102,7 @@ func (*StripeAdaptor) RequestPay(c *gin.Context, req *StripePayRequest) {
 	topUp := &model.TopUp{
 		UserId:          id,
 		Amount:          req.Amount,
-		Money:           chargedMoney,
+		Money:           calculateStripePaymentUSD(float64(req.Amount), user.Group), // Directly calculate and store USD money
 		TradeNo:         referenceId,
 		PaymentMethod:   model.PaymentMethodStripe,
 		PaymentProvider: model.PaymentProviderStripe,
@@ -115,7 +115,7 @@ func (*StripeAdaptor) RequestPay(c *gin.Context, req *StripePayRequest) {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "创建订单失败"})
 		return
 	}
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("Stripe 充值订单创建成功 user_id=%d trade_no=%s amount=%d money=%.2f", id, referenceId, req.Amount, chargedMoney))
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("Stripe 充值订单创建成功 user_id=%d trade_no=%s amount=%d money=%.2f", id, referenceId, req.Amount, topUp.Money)) // Use topUp.Money here
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
 		"data": gin.H{
@@ -385,21 +385,21 @@ func genStripeLink(referenceId string, customerId string, email string, amount i
 	return result.URL, nil
 }
 
-func GetChargedAmount(count float64, user model.User) float64 {
-	topUpGroupRatio := common.GetTopupGroupRatio(user.Group)
-	if topUpGroupRatio == 0 {
-		topUpGroupRatio = 1
-	}
-
-	return count * topUpGroupRatio
+func GetChargedAmount(amountQuotaUnits float64, user model.User) float64 {
+	return calculateStripePaymentUSD(amountQuotaUnits, user.Group)
 }
 
-func getStripePayMoney(amount float64, group string) float64 {
-	originalAmount := amount
+func GetChargedMoneyInUsd(amountQuotaUnits float64, user model.User) float64 {
+	return calculateStripePaymentUSD(amountQuotaUnits, user.Group)
+}
+
+func calculateStripePaymentUSD(amountQuotaUnits float64, group string) float64 {
+	originalAmount := amountQuotaUnits
 	if operation_setting.GetQuotaDisplayType() == operation_setting.QuotaDisplayTypeTokens {
-		amount = amount / common.QuotaPerUnit
+		amountQuotaUnits = amountQuotaUnits / common.QuotaPerUnit
 	}
-	// Using float64 for monetary calculations is acceptable here due to the small amounts involved
+	// Using float64 for monetary calculations is acceptable here to avoid decimal precision issues.
+	// We do not recommend using float64 for exact monetary calculations in production without careful consideration.
 	topupGroupRatio := common.GetTopupGroupRatio(group)
 	if topupGroupRatio == 0 {
 		topupGroupRatio = 1
@@ -411,7 +411,7 @@ func getStripePayMoney(amount float64, group string) float64 {
 			discount = ds
 		}
 	}
-	payMoney := amount * setting.StripeUnitPrice * topupGroupRatio * discount
+	payMoney := amountQuotaUnits * setting.StripeUnitPrice * topupGroupRatio * discount
 	return payMoney
 }
 

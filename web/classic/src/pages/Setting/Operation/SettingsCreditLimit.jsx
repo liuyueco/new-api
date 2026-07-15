@@ -41,6 +41,9 @@ export default function SettingsCreditLimit(props) {
     AffCommissionRateAdvanced: '0.1',
     AffAdvancedSingleTopUp: '10000',
     AffAdvancedTotalSpend: '30000',
+    TopUpBonusEnabled: true,
+    TopUpBonusRateNormal: '0.01',
+    TopUpBonusRateAdvanced: '0.15',
     'quota_setting.enable_free_model_pre_consume': true,
   });
   const refForm = useRef();
@@ -231,6 +234,55 @@ export default function SettingsCreditLimit(props) {
                     setInputs({
                       ...inputs,
                       AffCommissionRateAdvanced: String(value),
+                    })
+                  }
+                />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.Switch
+                  label={t('充值赠送')}
+                  field={'TopUpBonusEnabled'}
+                  extraText={t(
+                    '开启后，用户在线充值成功可按比例获得额外可用额度',
+                  )}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      TopUpBonusEnabled: value,
+                    })
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('普通用户充值赠送比例')}
+                  field={'TopUpBonusRateNormal'}
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  extraText={t('默认 0.01 表示赠送实付金额的 1%')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      TopUpBonusRateNormal: String(value),
+                    })
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  label={t('高级代理充值赠送比例')}
+                  field={'TopUpBonusRateAdvanced'}
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  extraText={t('默认 0.15 表示赠送实付金额的 15%')}
+                  onChange={(value) =>
+                    setInputs({
+                      ...inputs,
+                      TopUpBonusRateAdvanced: String(value),
                     })
                   }
                 />

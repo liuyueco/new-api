@@ -38,7 +38,6 @@ import {
 import { SiAlipay, SiWechat, SiStripe } from 'react-icons/si';
 import {
   CreditCard,
-  Coins,
   Wallet,
   BarChart2,
   TrendingUp,
@@ -98,6 +97,7 @@ const RechargeCard = ({
   allSubscriptions = [],
   reloadSubscriptionSelf,
   enableRedemption = true,
+  topupBonusRate = 0,
 }) => {
   const onlineFormApiRef = useRef(null);
   const redeemFormApiRef = useRef(null);
@@ -295,11 +295,51 @@ const RechargeCard = ({
                             />
                           }
                         >
-                          <Text type='secondary' className='text-red-600'>
-                            {t('实付金额：')}
-                            <span style={{ color: 'red' }}>
-                              {renderAmount()}
-                            </span>
+                          <Text type='secondary'>
+                            {topupBonusRate > 0 && topUpCount > 0 ? (() => {
+                              const { symbol, rate, type } = getCurrencyConfig();
+                              const statusStr = localStorage.getItem('status');
+                              let usdRate = 7;
+                              try {
+                                if (statusStr) {
+                                  const s = JSON.parse(statusStr);
+                                  usdRate = s?.usd_exchange_rate || 7;
+                                }
+                              } catch (e) {}
+                              let displayValue = topUpCount;
+                              if (type === 'CNY') {
+                                displayValue = topUpCount * usdRate;
+                              } else if (type === 'CUSTOM') {
+                                displayValue = topUpCount * rate;
+                              }
+                              const bonus = displayValue * topupBonusRate;
+                              return (
+                                <>
+                                  {t('实付金额：')}
+                                  <span style={{ color: 'red' }}>
+                                    {renderAmount()}
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: 'var(--semi-color-danger)',
+                                      marginLeft: 8,
+                                      fontWeight: 500,
+                                    }}
+                                  >
+                                    {t('额外赠送 {{amount}}', {
+                                      amount: `${symbol}${bonus.toFixed(2)}`,
+                                    })}
+                                  </span>
+                                </>
+                              );
+                            })() : (
+                              <>
+                                {t('实付金额：')}
+                                <span style={{ color: 'red' }}>
+                                  {renderAmount()}
+                                </span>
+                              </>
+                            )}
                           </Text>
                         </Skeleton>
                       }
@@ -435,7 +475,7 @@ const RechargeCard = ({
                     </div>
                   }
                 >
-                  <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2'>
+                  <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
                     {presetAmounts.map((preset, index) => {
                       const discount =
                         preset.discount ||
@@ -476,6 +516,9 @@ const RechargeCard = ({
                         displaySave = (save / usdRate) * rate;
                       }
 
+                      const bonusAmount =
+                        topupBonusRate > 0 ? displayValue * topupBonusRate : 0;
+
                       return (
                         <Card
                           key={index}
@@ -497,15 +540,24 @@ const RechargeCard = ({
                             );
                           }}
                         >
-                          <div style={{ textAlign: 'center' }}>
-                            <Typography.Title
-                              heading={6}
-                              style={{ margin: '0 0 8px 0' }}
+                          <div style={{ textAlign: 'left' }}>
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: 8,
+                                marginBottom: 6,
+                              }}
                             >
-                              <Coins size={18} />
-                              {formatLargeNumber(displayValue)} {symbol}
+                              <Typography.Title
+                                heading={4}
+                                style={{ margin: 0, fontWeight: 600 }}
+                              >
+                                {formatLargeNumber(displayValue)}
+                              </Typography.Title>
                               {hasDiscount && (
-                                <Tag style={{ marginLeft: 4 }} color='green'>
+                                <Tag color='green'>
                                   {t('折').includes('off')
                                     ? (
                                         (1 - parseFloat(discount)) *
@@ -515,20 +567,49 @@ const RechargeCard = ({
                                   {t('折')}
                                 </Tag>
                               )}
-                            </Typography.Title>
-                            <div
-                              style={{
-                                color: 'var(--semi-color-text-2)',
-                                fontSize: '12px',
-                                margin: '4px 0',
-                              }}
-                            >
-                              {t('实付')} {symbol}
-                              {displayActualPay.toFixed(2)}，
-                              {hasDiscount
-                                ? `${t('节省')} ${symbol}${displaySave.toFixed(2)}`
-                                : `${t('节省')} ${symbol}0.00`}
                             </div>
+                            {bonusAmount > 0 ? (
+                              <>
+                                <div
+                                  style={{
+                                    color: 'var(--semi-color-text-2)',
+                                    fontSize: 12,
+                                    marginBottom: 4,
+                                  }}
+                                >
+                                  {t('实付')} {symbol}
+                                  {displayActualPay.toFixed(2)}
+                                  {hasDiscount
+                                    ? `，${t('节省')} ${symbol}${displaySave.toFixed(2)}`
+                                    : ''}
+                                </div>
+                                <div
+                                  style={{
+                                    color: 'var(--semi-color-danger)',
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    lineHeight: 1.35,
+                                  }}
+                                >
+                                  {t('额外赠送 {{amount}}', {
+                                    amount: `${symbol}${bonusAmount.toFixed(2)}`,
+                                  })}
+                                </div>
+                              </>
+                            ) : (
+                              <div
+                                style={{
+                                  color: 'var(--semi-color-text-2)',
+                                  fontSize: 12,
+                                }}
+                              >
+                                {t('实付')} {symbol}
+                                {displayActualPay.toFixed(2)}
+                                {hasDiscount
+                                  ? `，${t('节省')} ${symbol}${displaySave.toFixed(2)}`
+                                  : ''}
+                              </div>
+                            )}
                           </div>
                         </Card>
                       );

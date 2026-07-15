@@ -41,6 +41,9 @@ const OperationSetting = () => {
     AffCommissionRateAdvanced: 0.1,
     AffAdvancedSingleTopUp: 10000,
     AffAdvancedTotalSpend: 30000,
+    TopUpBonusEnabled: true,
+    TopUpBonusRateNormal: 0.01,
+    TopUpBonusRateAdvanced: 0.15,
     'quota_setting.enable_free_model_pre_consume': true,
 
     /* 通用设置 */

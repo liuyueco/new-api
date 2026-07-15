@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "Chaque palier accepte jusqu’à 2 conditions ; le dernier palier sert de repli sans condition. Utilisez la longueur complète de l’entrée pour éviter un mauvais aiguillage lorsque les lectures de cache réduisent les tokens d’entrée facturables.",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "Chaque palier prend en charge jusqu’à 2 conditions. Le dernier palier sans condition sert de repli.",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "Gagnez {{rate}} % lorsque vos filleuls rechargent en ligne. Vous êtes actuellement {{level}}.",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "Gagnez {{rate}} % lorsque vos filleuls rechargent en ligne. La commission est créditée sur votre portefeuille (usage uniquement). Vous êtes actuellement {{level}}.",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "Gagnez des récompenses lorsque vos filleuls ajoutent des fonds. Transférez les récompenses accumulées à votre solde à tout moment.",
     "Edit": "Modifier",
     "Edit {{title}}": "Modifier {{title}}",
@@ -4565,6 +4566,19 @@
     "Zero retention": "Aucune rétention",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Advanced Agent Top-up Bonus Rate": "Taux de bonus de recharge agent avancé",
+    "Default 0.01 means +1% of paid amount": "Par défaut 0,01 signifie +1 % du montant payé",
+    "Default 0.15 means +15% of paid amount": "Par défaut 0,15 signifie +15 % du montant payé",
+    "Normal User Top-up Bonus Rate": "Taux de bonus de recharge utilisateur normal",
+    "Top-up Bonus": "Bonus de recharge",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "Une fois activé, les utilisateurs reçoivent un bonus en pourcentage de leur recharge en ligne comme quota utilisable.",
+    "Bonus +{{amount}}": "Bonus +{{amount}}",
+    "Bonus:": "Bonus :",
+    "Pay {{amount}}": "Payer {{amount}}",
+    "Save {{amount}}": "Économisez {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "Payer {{pay}}, {{bonus}} de solde en plus",
+    "Extra gift {{amount}}": "Cadeau supplémentaire {{amount}}",
+    "Extra gift": "Cadeau supplémentaire"
   }
 }

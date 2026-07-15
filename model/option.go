@@ -136,6 +136,9 @@ func InitOptionMap() {
 	common.OptionMap["AffCommissionRateAdvanced"] = strconv.FormatFloat(common.AffCommissionRateAdvanced, 'f', -1, 64)
 	common.OptionMap["AffAdvancedSingleTopUp"] = strconv.FormatFloat(common.AffAdvancedSingleTopUp, 'f', -1, 64)
 	common.OptionMap["AffAdvancedTotalSpend"] = strconv.FormatFloat(common.AffAdvancedTotalSpend, 'f', -1, 64)
+	common.OptionMap["TopUpBonusEnabled"] = strconv.FormatBool(common.TopUpBonusEnabled)
+	common.OptionMap["TopUpBonusRateNormal"] = strconv.FormatFloat(common.TopUpBonusRateNormal, 'f', -1, 64)
+	common.OptionMap["TopUpBonusRateAdvanced"] = strconv.FormatFloat(common.TopUpBonusRateAdvanced, 'f', -1, 64)
 	common.OptionMap["QuotaRemindThreshold"] = strconv.Itoa(common.QuotaRemindThreshold)
 	common.OptionMap["PreConsumedQuota"] = strconv.Itoa(common.PreConsumedQuota)
 	common.OptionMap["ModelRequestRateLimitCount"] = strconv.Itoa(setting.ModelRequestRateLimitCount)
@@ -515,6 +518,12 @@ func updateOptionMap(key string, value string) (err error) {
 		common.AffAdvancedSingleTopUp, _ = strconv.ParseFloat(value, 64)
 	case "AffAdvancedTotalSpend":
 		common.AffAdvancedTotalSpend, _ = strconv.ParseFloat(value, 64)
+	case "TopUpBonusEnabled":
+		common.TopUpBonusEnabled = value == "true"
+	case "TopUpBonusRateNormal":
+		common.TopUpBonusRateNormal, _ = strconv.ParseFloat(value, 64)
+	case "TopUpBonusRateAdvanced":
+		common.TopUpBonusRateAdvanced, _ = strconv.ParseFloat(value, 64)
 	case "QuotaRemindThreshold":
 		common.QuotaRemindThreshold, _ = strconv.Atoi(value)
 	case "PreConsumedQuota":

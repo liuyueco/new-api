@@ -86,7 +86,7 @@ export function AffiliateRewardsCard({
             <p className='text-muted-foreground line-clamp-2 text-xs'>
               {commissionEnabled
                 ? t(
-                    'Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.',
+                    'Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.',
                     {
                       rate: (currentRate * 100).toFixed(
                         currentRate * 100 % 1 === 0 ? 0 : 2

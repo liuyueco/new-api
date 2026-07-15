@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.",
     "Edit": "Edit",
     "Edit {{title}}": "Edit {{title}}",
@@ -4565,6 +4566,19 @@
     "Zero retention": "Zero retention",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Advanced Agent Top-up Bonus Rate": "Advanced Agent Top-up Bonus Rate",
+    "Default 0.01 means +1% of paid amount": "Default 0.01 means +1% of paid amount",
+    "Default 0.15 means +15% of paid amount": "Default 0.15 means +15% of paid amount",
+    "Normal User Top-up Bonus Rate": "Normal User Top-up Bonus Rate",
+    "Top-up Bonus": "Top-up Bonus",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.",
+    "Bonus +{{amount}}": "Bonus +{{amount}}",
+    "Bonus:": "Bonus:",
+    "Pay {{amount}}": "Pay {{amount}}",
+    "Save {{amount}}": "Save {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "Pay {{pay}}, extra {{bonus}} balance",
+    "Extra gift {{amount}}": "Extra gift {{amount}}",
+    "Extra gift": "Extra gift"
   }
 }

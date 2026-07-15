@@ -250,6 +250,8 @@ func InitLogDB() (err error) {
 func migrateDB() error {
 	// Migrate price_amount column from float/double to decimal for existing tables
 	migrateSubscriptionPlanPriceAmount()
+	// Widen aff commission money column so large top-ups (e.g. 10000) no longer overflow decimal(10,6)
+	migrateAffCommissionMoneyColumn()
 	// Migrate model_limits column from varchar to text for existing tables
 	if err := migrateTokenModelLimitsToText(); err != nil {
 		return err
@@ -282,6 +284,7 @@ func migrateDB() error {
 		&UserOAuthBinding{},
 		&PerfMetric{},
 		&AffCommissionRecord{},
+		&TopUpBonusRecord{},
 	)
 	if err != nil {
 		return err
@@ -302,6 +305,7 @@ func migrateDB() error {
 }
 
 func migrateDBFast() error {
+	migrateAffCommissionMoneyColumn()
 
 	var wg sync.WaitGroup
 
@@ -335,6 +339,7 @@ func migrateDBFast() error {
 		{&UserOAuthBinding{}, "UserOAuthBinding"},
 		{&PerfMetric{}, "PerfMetric"},
 		{&AffCommissionRecord{}, "AffCommissionRecord"},
+		{&TopUpBonusRecord{}, "TopUpBonusRecord"},
 	}
 	// 动态计算migration数量，确保errChan缓冲区足够大
 	errChan := make(chan error, len(migrations))
@@ -511,6 +516,63 @@ func migrateTokenModelLimitsToText() error {
 		common.SysLog(fmt.Sprintf("Successfully migrated %s.%s to text", tableName, columnName))
 	}
 	return nil
+}
+
+// migrateAffCommissionMoneyColumn widens money from decimal(10,6) to decimal(20,6).
+// decimal(10,6) only allows values up to 9999.999999, so a 10000 CNY top-up overflows on insert.
+func migrateAffCommissionMoneyColumn() {
+	if common.UsingSQLite {
+		return
+	}
+
+	tableName := "aff_commission_records"
+	columnName := "money"
+
+	if !DB.Migrator().HasTable(tableName) {
+		return
+	}
+	if !DB.Migrator().HasColumn(&AffCommissionRecord{}, columnName) {
+		return
+	}
+
+	var alterSQL string
+	if common.UsingPostgreSQL {
+		var precision int64
+		if err := DB.Raw(`SELECT COALESCE(numeric_precision, 0) FROM information_schema.columns
+			WHERE table_schema = current_schema() AND table_name = ? AND column_name = ?`,
+			tableName, columnName).Scan(&precision).Error; err != nil {
+			common.SysLog(fmt.Sprintf("Warning: failed to query metadata for %s.%s: %v", tableName, columnName, err))
+			return
+		}
+		if precision >= 20 {
+			return
+		}
+		alterSQL = fmt.Sprintf(`ALTER TABLE %s ALTER COLUMN %s TYPE decimal(20,6) USING %s::decimal(20,6)`,
+			tableName, columnName, columnName)
+	} else if common.UsingMySQL {
+		var columnType string
+		if err := DB.Raw(`SELECT COLUMN_TYPE FROM information_schema.columns
+				WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?`,
+			tableName, columnName).Scan(&columnType).Error; err != nil {
+			common.SysLog(fmt.Sprintf("Warning: failed to query metadata for %s.%s: %v", tableName, columnName, err))
+			return
+		}
+		if strings.Contains(strings.ToLower(columnType), "decimal(20,") {
+			return
+		}
+		alterSQL = fmt.Sprintf("ALTER TABLE %s MODIFY COLUMN %s decimal(20,6) NOT NULL DEFAULT 0",
+			tableName, columnName)
+	} else {
+		return
+	}
+
+	if alterSQL != "" {
+		if err := DB.Exec(alterSQL).Error; err != nil {
+			common.SysLog(fmt.Sprintf("Warning: failed to migrate %s.%s to decimal(20,6): %v", tableName, columnName, err))
+		} else {
+			common.SysLog(fmt.Sprintf("Successfully migrated %s.%s to decimal(20,6)", tableName, columnName))
+		}
+	}
 }
 
 // migrateSubscriptionPlanPriceAmount migrates price_amount column from float/double to decimal(10,6)

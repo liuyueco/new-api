@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "Каждый уровень поддерживает до 2 условий; последний уровень является резервным и не содержит условий. Используйте полную длину входа для условий уровня, чтобы кэш-попадания не снижали оплачиваемые входные токены и не приводили к неверному маршруту.",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "Каждый уровень поддерживает до 2 условий. Последний уровень без условий используется как резервный.",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "Получайте {{rate}}% при онлайн-пополнении рефералов. Сейчас вы: {{level}}.",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "Получайте {{rate}}% при онлайн-пополнении рефералов. Комиссия зачисляется на кошелёк только для использования. Сейчас вы: {{level}}.",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "Получайте вознаграждения, когда ваши рефералы пополняют счет. Переводите накопленные вознаграждения на свой баланс в любое время.",
     "Edit": "Редактировать",
     "Edit {{title}}": "Редактировать {{title}}",
@@ -4565,6 +4566,19 @@
     "Zero retention": "Без хранения данных",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Advanced Agent Top-up Bonus Rate": "Бонус пополнения для продвинутого агента",
+    "Default 0.01 means +1% of paid amount": "По умолчанию 0.01 означает +1% от оплаченной суммы",
+    "Default 0.15 means +15% of paid amount": "По умолчанию 0.15 означает +15% от оплаченной суммы",
+    "Normal User Top-up Bonus Rate": "Бонус пополнения для обычного пользователя",
+    "Top-up Bonus": "Бонус пополнения",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "При включении пользователи получают процент от суммы онлайн-пополнения в виде доступной квоты.",
+    "Bonus +{{amount}}": "Бонус +{{amount}}",
+    "Bonus:": "Бонус:",
+    "Pay {{amount}}": "К оплате {{amount}}",
+    "Save {{amount}}": "Экономия {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "Оплата {{pay}}, дополнительно {{bonus}} баланса",
+    "Extra gift {{amount}}": "Доп. подарок {{amount}}",
+    "Extra gift": "Доп. подарок"
   }
 }

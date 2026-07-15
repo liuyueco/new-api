@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "各階層は最大2つの条件をサポートします。最後の階層は条件なしのフォールバックです。キャッシュヒットで課金対象の入力トークンが減っても誤った階層にならないよう、条件には完全な入力長を使用してください。",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "各段階は最大 2 つの条件に対応します。条件のない最後の段階がフォールバックです。",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "紹介先がオンラインチャージすると {{rate}}% を獲得。現在：{{level}}。",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "紹介先がオンラインチャージすると {{rate}}% を獲得し、利用専用ウォレット残高に自動加算。現在：{{level}}。",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "紹介者が資金を追加すると報酬を獲得できます。いつでも蓄積された報酬を残高に振り替えることができます。",
     "Edit": "編集",
     "Edit {{title}}": "{{title}}を編集",
@@ -4565,6 +4566,19 @@
     "Zero retention": "データ保持なし",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V 4",
-    "Zoom": "ズーム"
+    "Zoom": "ズーム",
+    "Advanced Agent Top-up Bonus Rate": "上級代理のチャージボーナス率",
+    "Default 0.01 means +1% of paid amount": "デフォルト 0.01 は支払額の +1%",
+    "Default 0.15 means +15% of paid amount": "デフォルト 0.15 は支払額の +15%",
+    "Normal User Top-up Bonus Rate": "一般ユーザーのチャージボーナス率",
+    "Top-up Bonus": "チャージボーナス",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "有効にすると、オンラインチャージ成功時に支払額の一定割合が利用可能な枠として付与されます。",
+    "Bonus +{{amount}}": "ボーナス +{{amount}}",
+    "Bonus:": "ボーナス：",
+    "Pay {{amount}}": "支払額 {{amount}}",
+    "Save {{amount}}": "お得 {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "支払 {{pay}}、追加 {{bonus}} 残高",
+    "Extra gift {{amount}}": "追加ギフト {{amount}}",
+    "Extra gift": "追加ギフト"
   }
 }

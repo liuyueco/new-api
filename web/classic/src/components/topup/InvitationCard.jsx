@@ -68,10 +68,13 @@ const InvitationCard = ({
           </Typography.Text>
           <div className='text-xs'>
             {commissionEnabled
-              ? t('当前为{{level}}，下级在线充值可获 {{rate}}% 提成', {
-                  level: isAdvanced ? t('高级代理') : t('普通代理'),
-                  rate: formatPercent(currentRate),
-                })
+              ? t(
+                  '当前为{{level}}，下级在线充值可获 {{rate}}% 提成，自动计入钱包仅可消耗算力',
+                  {
+                    level: isAdvanced ? t('高级代理') : t('普通代理'),
+                    rate: formatPercent(currentRate),
+                  },
+                )
               : t('邀请好友获得额外奖励')}
           </div>
         </div>
@@ -236,7 +239,9 @@ const InvitationCard = ({
             <div className='flex items-start gap-2'>
               <Badge dot type='success' />
               <Text type='tertiary' className='text-sm'>
-                {t('邀请好友注册，好友在线充值后您可按代理等级获得提成')}
+                {t(
+                  '邀请好友注册，好友在线充值后提成自动计入钱包，仅可用于消耗算力',
+                )}
               </Text>
             </div>
 

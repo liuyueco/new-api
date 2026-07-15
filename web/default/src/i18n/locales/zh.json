@@ -1334,6 +1334,7 @@
     "Each tier supports up to 2 conditions; the last tier is the catch-all without conditions. Use full input length for tier conditions to avoid mis-routing when cache hits reduce billable input tokens.": "每个档位最多支持 2 个条件；最后一个档位是不带条件的兜底档。建议使用完整输入长度作为档位条件，避免缓存命中减少计费输入 token 后误判档位。",
     "Each tier supports up to 2 conditions. The last tier without conditions is the fallback.": "每个阶梯最多支持 2 个条件。最后一个无条件阶梯作为兜底。",
     "Earn {{rate}}% when your referrals complete an online top-up. You are currently a {{level}}.": "下级在线充值后可获 {{rate}}% 提成。当前等级：{{level}}。",
+    "Earn {{rate}}% when your referrals complete an online top-up. Commission is credited to your wallet for usage only. You are currently a {{level}}.": "下级在线充值后可获 {{rate}}% 提成，自动计入钱包额度仅可用于消耗算力。当前等级：{{level}}。",
     "Earn rewards when your referrals add funds. Transfer accumulated rewards to your balance anytime.": "当您的推荐人充值时即可获得奖励。随时将累计奖励转移到您的余额。",
     "Edit": "编辑",
     "Edit {{title}}": "编辑{{title}}",
@@ -4565,6 +4566,19 @@
     "Zero retention": "零数据保留",
     "Zhipu": "智谱",
     "Zhipu V4": "智谱 V4",
-    "Zoom": "缩放"
+    "Zoom": "缩放",
+    "Advanced Agent Top-up Bonus Rate": "高级代理充值赠送比例",
+    "Default 0.01 means +1% of paid amount": "默认 0.01 表示赠送实付金额的 1%",
+    "Default 0.15 means +15% of paid amount": "默认 0.15 表示赠送实付金额的 15%",
+    "Normal User Top-up Bonus Rate": "普通用户充值赠送比例",
+    "Top-up Bonus": "充值赠送",
+    "When enabled, users receive a percentage bonus of their online top-up amount as usable quota.": "开启后，用户在线充值成功可按比例获得额外可用额度。",
+    "Bonus +{{amount}}": "赠送 +{{amount}}",
+    "Bonus:": "赠送：",
+    "Pay {{amount}}": "实付 {{amount}}",
+    "Save {{amount}}": "节省 {{amount}}",
+    "Pay {{pay}}, extra {{bonus}} balance": "支付 {{pay}}, 额外 {{bonus}} 余额",
+    "Extra gift {{amount}}": "额外赠送 {{amount}}",
+    "Extra gift": "额外赠送"
   }
 }

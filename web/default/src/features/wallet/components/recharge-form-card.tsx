@@ -40,6 +40,7 @@ import {
   getPaymentIcon,
   getMinTopupAmount,
   calculatePresetPricing,
+  calculateTopUpBonus,
 } from '../lib'
 import type {
   PaymentMethod,
@@ -78,6 +79,7 @@ interface RechargeFormCardProps {
   waffoMinTopup?: number
   onWaffoMethodSelect?: (method: WaffoPayMethod, index: number) => void
   enableWaffoPancakeTopup?: boolean
+  topupBonusRate?: number
 }
 
 export function RechargeFormCard({
@@ -108,6 +110,7 @@ export function RechargeFormCard({
   waffoMinTopup,
   onWaffoMethodSelect,
   enableWaffoPancakeTopup,
+  topupBonusRate = 0,
 }: RechargeFormCardProps) {
   const { t } = useTranslation()
   const [localAmount, setLocalAmount] = useState(topupAmount.toString())
@@ -136,6 +139,10 @@ export function RechargeFormCard({
     Array.isArray(waffoPayMethods) && waffoPayMethods.length > 0
   const minTopup = getMinTopupAmount(topupInfo)
   const redemptionEnabled = topupInfo?.enable_redemption !== false
+  const customBonus = calculateTopUpBonus(
+    topupAmount * usdExchangeRate,
+    topupBonusRate
+  )
 
   if (loading) {
     return (
@@ -216,7 +223,7 @@ export function RechargeFormCard({
                   <Label className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
                     {t('Amount')}
                   </Label>
-                  <div className='grid grid-cols-2 gap-1.5 sm:gap-3 md:grid-cols-4'>
+                  <div className='grid grid-cols-2 gap-1.5 sm:gap-3 md:grid-cols-3'>
                     {presetAmounts.map((preset, index) => {
                       const discount =
                         preset.discount ||
@@ -233,37 +240,53 @@ export function RechargeFormCard({
                         discount,
                         usdExchangeRate
                       )
+                      const bonusAmount = calculateTopUpBonus(
+                        displayValue,
+                        topupBonusRate
+                      )
                       return (
                         <Button
                           key={index}
                           variant='outline'
                           className={cn(
-                            'hover:border-foreground flex min-h-16 flex-col items-start rounded-lg px-3 py-2.5 text-left whitespace-normal sm:min-h-[72px] sm:p-4',
+                            'hover:border-foreground flex min-h-[4.75rem] flex-col items-start justify-center gap-1.5 rounded-lg px-3 py-3 text-left whitespace-normal sm:min-h-[5.25rem] sm:px-4',
                             selectedPreset === preset.value
                               ? 'border-foreground bg-foreground/5 dark:border-foreground dark:bg-foreground/10'
                               : 'border-muted'
                           )}
                           onClick={() => onSelectPreset(preset)}
                         >
-                          <div className='flex w-full items-center justify-between'>
-                            <div className='text-base font-semibold sm:text-lg'>
+                          <div className='flex w-full items-center justify-between gap-2'>
+                            <div className='text-xl leading-none font-semibold tracking-tight sm:text-2xl'>
                               {formatNumber(displayValue)}
                             </div>
                             {hasDiscount && (
-                              <div className='text-xs font-medium text-green-600'>
+                              <div className='shrink-0 text-xs font-medium text-green-600'>
                                 {getDiscountLabel(discount)}
                               </div>
                             )}
                           </div>
-                          <div className='text-muted-foreground mt-1.5 w-full text-xs sm:mt-2'>
-                            Pay {formatCurrency(actualPrice)}
+                          <div className='text-muted-foreground w-full text-xs'>
+                            {t('Pay {{amount}}', {
+                              amount: formatCurrency(actualPrice),
+                            })}
                             {hasDiscount && savedAmount > 0 && (
                               <span className='text-green-600'>
                                 {' '}
-                                • Save {formatCurrency(savedAmount)}
+                                ·{' '}
+                                {t('Save {{amount}}', {
+                                  amount: formatCurrency(savedAmount),
+                                })}
                               </span>
                             )}
                           </div>
+                          {bonusAmount > 0 && (
+                            <div className='w-full text-xs font-medium text-red-500 sm:text-[13px]'>
+                              {t('Extra gift {{amount}}', {
+                                amount: formatCurrency(bonusAmount),
+                              })}
+                            </div>
+                          )}
                         </Button>
                       )
                     })}
@@ -288,16 +311,30 @@ export function RechargeFormCard({
                     placeholder={`Minimum ${minTopup}`}
                     className='h-9 text-base sm:h-10 sm:text-lg'
                   />
-                  <div className='bg-muted/30 flex min-h-9 items-center justify-between gap-2 rounded-md border px-3 lg:min-w-52'>
-                    <span className='text-muted-foreground truncate text-xs'>
-                      {t('Amount to pay:')}
-                    </span>
+                  <div className='bg-muted/30 flex min-h-9 flex-col justify-center gap-0.5 rounded-md border px-3 py-1.5 lg:min-w-56'>
                     {calculating ? (
-                      <Skeleton className='h-5 w-16' />
+                      <Skeleton className='h-5 w-28' />
                     ) : (
-                      <span className='text-sm font-semibold'>
-                        {formatCurrency(paymentAmount)}
-                      </span>
+                      <>
+                        <div className='flex items-center justify-between gap-2'>
+                          <span className='text-muted-foreground truncate text-xs'>
+                            {t('Amount to pay:')}
+                          </span>
+                          <span className='text-sm font-semibold'>
+                            {formatCurrency(paymentAmount)}
+                          </span>
+                        </div>
+                        {customBonus > 0 && (
+                          <div className='flex items-center justify-between gap-2'>
+                            <span className='text-muted-foreground truncate text-xs'>
+                              {t('Extra gift')}
+                            </span>
+                            <span className='text-xs font-medium text-red-500'>
+                              +{formatCurrency(customBonus)}
+                            </span>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

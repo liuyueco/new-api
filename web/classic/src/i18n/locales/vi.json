@@ -1639,6 +1639,7 @@
     "当前 API 密钥已过期，请在设置中更新。": "Current API key has expired, please update it in settings.",
     "当前 Ollama 版本为 ${version}": "Current Ollama version is ${version}",
     "当前为{{level}}，下级在线充值可获 {{rate}}% 提成": "Bạn đang là {{level}}; nhận {{rate}}% khi người được mời nạp tiền",
+    "当前为{{level}}，下级在线充值可获 {{rate}}% 提成，自动计入钱包仅可消耗算力": "Bạn đang là {{level}}; {{rate}}% vào ví chỉ để tiêu dùng",
     "当前仅 OpenAI / Claude 语义支持缓存 token 统计，其他通道将隐藏 token 相关字段。": "Hiện chỉ ngữ nghĩa OpenAI / Claude hỗ trợ thống kê token đệm. Các kênh khác sẽ ẩn các trường liên quan đến token.",
     "当前仅支持易支付接口，回调地址请在通用设置中配置。": "Hiện tại chỉ hỗ trợ giao diện Epay. Hãy cấu hình địa chỉ gọi lại trong cài đặt chung.",
     "当前余额": "Số dư hiện tại",
@@ -4184,6 +4185,7 @@
     "邀请奖励划转已禁用，管理员需先确认合规声明。": "Invitation reward transfer is disabled until compliance terms are confirmed.",
     "邀请好友注册，好友充值后您可获得相应奖励": "Mời bạn bè đăng ký, bạn có thể nhận được phần thưởng tương ứng sau khi bạn bè nạp tiền",
     "邀请好友注册，好友在线充值后您可按代理等级获得提成": "Mời bạn đăng ký; nhận hoa hồng theo cấp sau khi họ nạp tiền trực tuyến",
+    "邀请好友注册，好友在线充值后提成自动计入钱包，仅可用于消耗算力": "Mời bạn đăng ký; hoa hồng vào ví chỉ để tiêu dùng",
     "邀请好友获得额外奖励": "Mời bạn bè để nhận thêm phần thưởng",
     "邀请新用户奖励额度": "Hạn ngạch thưởng mời người dùng mới",
     "邀请的好友越多，获得的奖励越多": "Mời càng nhiều bạn bè, bạn càng nhận được nhiều phần thưởng",
@@ -4483,6 +4485,15 @@
     "默认折叠侧边栏": "Mặc định thu gọn thanh bên",
     "默认测试模型": "Mô hình kiểm tra mặc định",
     "默认用户消息": "Xin chào",
-    "默认补全倍率": "Tỷ lệ hoàn thành mặc định"
+    "默认补全倍率": "Tỷ lệ hoàn thành mặc định",
+    "充值赠送": "Thưởng nạp tiền",
+    "开启后，用户在线充值成功可按比例获得额外可用额度": "Khi bật, người dùng nhận thêm phần trăm thưởng khi nạp online",
+    "普通用户充值赠送比例": "Tỷ lệ thưởng nạp người dùng thường",
+    "默认 0.01 表示赠送实付金额的 1%": "Mặc định 0.01 nghĩa là +1%",
+    "高级代理充值赠送比例": "Tỷ lệ thưởng đại lý nâng cao",
+    "默认 0.15 表示赠送实付金额的 15%": "Mặc định 0.15 nghĩa là +15%",
+    "赠送": "Thưởng",
+    "支付 {{pay}}, 额外 {{bonus}} 余额": "Thanh toán {{pay}}, thêm {{bonus}} số dư",
+    "额外赠送 {{amount}}": "Tặng thêm {{amount}}"
   }
 }

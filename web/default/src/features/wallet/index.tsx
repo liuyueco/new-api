@@ -44,6 +44,7 @@ import {
   getDefaultPaymentType,
   getMinTopupAmount,
   isWaffoPancakePayment,
+  getTopUpBonusRate,
 } from './lib'
 import type {
   UserWalletData,
@@ -257,6 +258,13 @@ export function Wallet(props: WalletProps) {
     []
   )
 
+  const topupBonusRate = getTopUpBonusRate(
+    status?.topup_bonus_enabled !== false,
+    user?.agent_level,
+    Number(status?.topup_bonus_rate_normal ?? 0.01),
+    Number(status?.topup_bonus_rate_advanced ?? 0.15)
+  )
+
   return (
     <>
       <SectionPageLayout>
@@ -303,6 +311,7 @@ export function Wallet(props: WalletProps) {
                   enableWaffoPancakeTopup={
                     topupInfo?.enable_waffo_pancake_topup
                   }
+                  topupBonusRate={topupBonusRate}
                 />
               </div>
 
@@ -349,6 +358,7 @@ export function Wallet(props: WalletProps) {
         processing={processing || pancakeProcessing}
         discountRate={getDiscountRate()}
         usdExchangeRate={effectiveUsdExchangeRate}
+        topupBonusRate={topupBonusRate}
       />
 
       <TransferDialog

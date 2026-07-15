@@ -57,6 +57,9 @@ const quotaSchema = z.object({
   AffCommissionRateAdvanced: z.coerce.number().min(0).max(1),
   AffAdvancedSingleTopUp: z.coerce.number().min(0),
   AffAdvancedTotalSpend: z.coerce.number().min(0),
+  TopUpBonusEnabled: z.boolean(),
+  TopUpBonusRateNormal: z.coerce.number().min(0).max(1),
+  TopUpBonusRateAdvanced: z.coerce.number().min(0).max(1),
   TopUpLink: z.string(),
   general_setting: z.object({
     docs_link: z.string(),
@@ -297,6 +300,88 @@ export function QuotaSettingsSection({
                   </FormControl>
                   <FormDescription>
                     {t('Default 0.10 means 10% of paid amount')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <SettingsFormGridItem span='full'>
+              <FormField
+                control={form.control}
+                name='TopUpBonusEnabled'
+                render={({ field }) => (
+                  <SettingsSwitchItem>
+                    <SettingsSwitchContent>
+                      <FormLabel>{t('Top-up Bonus')}</FormLabel>
+                      <FormDescription>
+                        {t(
+                          'When enabled, users receive a percentage bonus of their online top-up amount as usable quota.'
+                        )}
+                      </FormDescription>
+                    </SettingsSwitchContent>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={updateOption.isPending}
+                      />
+                    </FormControl>
+                  </SettingsSwitchItem>
+                )}
+              />
+            </SettingsFormGridItem>
+
+            <FormField
+              control={form.control}
+              name='TopUpBonusRateNormal'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Normal User Top-up Bonus Rate')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min={0}
+                      max={1}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t('Default 0.01 means +1% of paid amount')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='TopUpBonusRateAdvanced'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {t('Advanced Agent Top-up Bonus Rate')}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min={0}
+                      max={1}
+                      value={field.value ?? ''}
+                      onChange={handleNumberChange(field.onChange)}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t('Default 0.15 means +15% of paid amount')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -127,6 +127,9 @@ func GetStatus(c *gin.Context) {
 		"aff_commission_rate_advanced": common.AffCommissionRateAdvanced,
 		"aff_advanced_single_topup":   common.AffAdvancedSingleTopUp,
 		"aff_advanced_total_spend":    common.AffAdvancedTotalSpend,
+		"topup_bonus_enabled":         common.TopUpBonusEnabled,
+		"topup_bonus_rate_normal":     common.TopUpBonusRateNormal,
+		"topup_bonus_rate_advanced":   common.TopUpBonusRateAdvanced,
 	}
 
 	// 根据启用状态注入可选内容

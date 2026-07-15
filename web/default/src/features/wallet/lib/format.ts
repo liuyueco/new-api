@@ -95,3 +95,31 @@ export function calculatePresetPricing(
     hasDiscount,
   }
 }
+
+/**
+ * Resolve top-up bonus rate for the current user level.
+ */
+export function getTopUpBonusRate(
+  enabled: boolean | undefined,
+  agentLevel: number | undefined,
+  rateNormal: number | undefined,
+  rateAdvanced: number | undefined
+): number {
+  if (enabled === false) return 0
+  const rate =
+    (agentLevel ?? 0) >= 1
+      ? (rateAdvanced ?? 0.15)
+      : (rateNormal ?? 0.01)
+  return Number.isFinite(rate) && rate > 0 ? rate : 0
+}
+
+/**
+ * Bonus amount in the same display units as the top-up amount.
+ */
+export function calculateTopUpBonus(
+  displayAmount: number,
+  bonusRate: number
+): number {
+  if (!(displayAmount > 0) || !(bonusRate > 0)) return 0
+  return displayAmount * bonusRate
+}
