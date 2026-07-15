@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"sync"
 	"time"
 
@@ -126,7 +128,7 @@ func LogQuota(quota int) string {
 	case operation_setting.QuotaDisplayTypeCNY:
 		usd := q / common.QuotaPerUnit
 		cny := usd * operation_setting.USDExchangeRate
-		return fmt.Sprintf("¥%.6f 额度", cny)
+		return formatQuotaAmount(cny, "¥") + " 额度"
 	case operation_setting.QuotaDisplayTypeCustom:
 		usd := q / common.QuotaPerUnit
 		rate := operation_setting.GetGeneralSetting().CustomCurrencyExchangeRate
@@ -137,12 +139,11 @@ func LogQuota(quota int) string {
 		if rate <= 0 {
 			rate = 1
 		}
-		v := usd * rate
-		return fmt.Sprintf("%s%.6f 额度", symbol, v)
+		return formatQuotaAmount(usd*rate, symbol) + " 额度"
 	case operation_setting.QuotaDisplayTypeTokens:
 		return fmt.Sprintf("%d 点额度", quota)
 	default: // USD
-		return fmt.Sprintf("＄%.6f 额度", q/common.QuotaPerUnit)
+		return formatQuotaAmount(q/common.QuotaPerUnit, "＄") + " 额度"
 	}
 }
 
@@ -152,7 +153,7 @@ func FormatQuota(quota int) string {
 	case operation_setting.QuotaDisplayTypeCNY:
 		usd := q / common.QuotaPerUnit
 		cny := usd * operation_setting.USDExchangeRate
-		return fmt.Sprintf("¥%.6f", cny)
+		return formatQuotaAmount(cny, "¥")
 	case operation_setting.QuotaDisplayTypeCustom:
 		usd := q / common.QuotaPerUnit
 		rate := operation_setting.GetGeneralSetting().CustomCurrencyExchangeRate
@@ -163,13 +164,19 @@ func FormatQuota(quota int) string {
 		if rate <= 0 {
 			rate = 1
 		}
-		v := usd * rate
-		return fmt.Sprintf("%s%.6f", symbol, v)
+		return formatQuotaAmount(usd*rate, symbol)
 	case operation_setting.QuotaDisplayTypeTokens:
 		return fmt.Sprintf("%d", quota)
 	default:
-		return fmt.Sprintf("＄%.6f", q/common.QuotaPerUnit)
+		return formatQuotaAmount(q/common.QuotaPerUnit, "＄")
 	}
+}
+
+// formatQuotaAmount rounds to 6 decimal places, then strips trailing zeros
+// so top-up logs show "$10000" / "$100" instead of "$10000.000000".
+func formatQuotaAmount(value float64, symbol string) string {
+	rounded := math.Round(value*1e6) / 1e6
+	return symbol + strconv.FormatFloat(rounded, 'f', -1, 64)
 }
 
 // LogJson 仅供测试使用 only for test
